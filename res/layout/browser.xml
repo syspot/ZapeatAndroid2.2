@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+    android:orientation="vertical">
+
+      <LinearLayout
+          android:layout_width="fill_parent"
+          android:layout_height="wrap_content"
+          android:background="#C0C0C0"
+          android:orientation="horizontal" >
+
+          <Button
+              android:id="@+id/btPromo"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="0.01"
+              android:background="@drawable/shapebutton"
+              android:drawableLeft="@drawable/cart"
+              android:paddingLeft="20dp"
+              android:text="Promoções"
+              android:textSize="11dp" />
+
+          <Button
+              android:id="@+id/btSair"
+              android:layout_width="84dp"
+              android:layout_height="fill_parent"
+              android:background="@drawable/shapebutton"
+              android:drawableLeft="@drawable/logout"
+              android:paddingLeft="20dp"
+              android:text="Sair"
+              android:textSize="11dp" />
+
+      </LinearLayout>
+
+    <WebView
+        android:id="@+id/wvBrowser"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:dividerHeight="3sp"
+        android:footerDividersEnabled="true"
+        android:headerDividersEnabled="true" 
+        android:layout_weight="1" />
+
+</LinearLayout>

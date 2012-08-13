@@ -1,0 +1,20 @@
+<resources>
+
+    <string name="app_name">Zapeat</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_zapeat">Zapeat</string>
+    <string name="title_activity_monitoring">Zapeat</string>
+    <string name="title_activity_main">Zapeat</string>
+    <string name="title_activity_configuracao">Zapeat</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_browser">Zapeat</string>
+    <string name="login">Login</string>
+    <string name="senha">Senha</string>
+    <string name="autenticar">Entrar</string>
+    <string name="title_activity_list">Zapeat - Promoções</string>
+    <string name="title_activity_promocao_list">Zapeat</string>
+    <string name="web">Web</string>
+    <string name="sair">Sair</string>
+    <string name="atualizar">Atualizado às \n 12:12:12 12:12</string>
+    
+</resources>
