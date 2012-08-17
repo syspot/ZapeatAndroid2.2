@@ -1,19 +1,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-    
+    android:layout_height="fill_parent"
+    android:background="@drawable/shapebutton" >
+
     <requestFocus />
+
     <EditText
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/senha"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/senha"
         android:layout_marginTop="77dp"
         android:ems="10"
         android:hint="@string/login" />
-    
+
     <EditText
         android:id="@+id/senha"
         android:layout_width="wrap_content"
@@ -34,7 +37,15 @@
         android:layout_alignRight="@+id/senha"
         android:layout_below="@+id/senha"
         android:layout_marginTop="44dp"
-        android:text="@string/autenticar" 
-        android:background="@drawable/shapebutton"/>
+        android:background="@drawable/shapebutton"
+        android:text="@string/autenticar" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_launcher" />
 
 </RelativeLayout>

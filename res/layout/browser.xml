@@ -18,7 +18,7 @@
               android:background="@drawable/shapebutton"
               android:drawableLeft="@drawable/cart"
               android:paddingLeft="20dp"
-              android:text="Promoções"
+              android:text="Ir para promoções do dia"
               android:textSize="11dp" />
 
           <Button

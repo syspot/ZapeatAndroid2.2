@@ -181,6 +181,14 @@ public class HttpUtil {
 
 			promocao.setDescricao(jsonPromo.getString(Constantes.JsonProperties.DESCRICAO));
 
+			promocao.setHoraFinal(jsonPromo.getString(Constantes.JsonProperties.HORA_FINAL));
+
+			promocao.setDataFinal(jsonPromo.getString(Constantes.JsonProperties.DATA_FINAL));
+			
+			promocao.setPrecoOriginal(jsonPromo.getString(Constantes.JsonProperties.PRECO_ORIGINAL));
+			
+			promocao.setPrecoPromocional(jsonPromo.getString(Constantes.JsonProperties.PRECO_PROMOCIONAL));
+
 			promocoes.add(promocao);
 
 		}

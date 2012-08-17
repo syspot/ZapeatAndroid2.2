@@ -57,7 +57,7 @@ public class ConfiguracaoActivity extends DefaultActivity {
 
 				sair();
 
-				Intent intent = new Intent(ConfiguracaoActivity.this, ZapeatAuthActivity.class);
+				Intent intent = new Intent(ConfiguracaoActivity.this,AuthActivity.class);
 
 				startActivity(intent);
 

@@ -40,7 +40,7 @@ public class BrowserActivity extends DefaultActivity {
 
 				sair();
 
-				Intent intent = new Intent(BrowserActivity.this, ZapeatAuthActivity.class);
+				Intent intent = new Intent(BrowserActivity.this, AuthActivity.class);
 
 				startActivity(intent);
 

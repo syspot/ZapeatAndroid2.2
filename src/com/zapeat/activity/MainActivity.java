@@ -20,7 +20,7 @@ public class MainActivity extends DefaultActivity {
 
 		if (usuario.intValue() == 0) {
 
-			intentMain = new Intent(this, ZapeatAuthActivity.class);
+			intentMain = new Intent(this, AuthActivity.class);
 
 		} else {
 

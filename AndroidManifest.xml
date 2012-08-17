@@ -28,7 +28,7 @@
             android:label="@string/title_activity_monitoring" >
         </activity>
         <activity
-            android:name=".ZapeatAuthActivity"
+            android:name=".AuthActivity"
             android:label="@string/title_activity_zapeat" >
         </activity>
         <activity

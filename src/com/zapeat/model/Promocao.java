@@ -10,6 +10,10 @@ public class Promocao {
 	private double longitude;
 	private String descricao;
 	private Date dataAnuncio;
+	private String dataFinal;
+	private String horaFinal;
+	private String precoOriginal;
+	private String precoPromocional;
 
 	public String getLocalidade() {
 		return localidade;
@@ -57,6 +61,38 @@ public class Promocao {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getHoraFinal() {
+		return horaFinal;
+	}
+
+	public void setHoraFinal(String horaFinal) {
+		this.horaFinal = horaFinal;
+	}
+
+	public String getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(String dataFinal) {
+		this.dataFinal = dataFinal;
+	}
+
+	public String getPrecoOriginal() {
+		return precoOriginal;
+	}
+
+	public void setPrecoOriginal(String precoOriginal) {
+		this.precoOriginal = precoOriginal;
+	}
+
+	public String getPrecoPromocional() {
+		return precoPromocional;
+	}
+
+	public void setPrecoPromocional(String precoPromocional) {
+		this.precoPromocional = precoPromocional;
 	}
 
 	@Override

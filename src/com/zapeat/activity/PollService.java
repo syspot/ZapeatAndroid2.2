@@ -1,13 +1,11 @@
 package com.zapeat.activity;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -15,6 +13,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -24,6 +23,7 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 import com.zapeat.dao.PromocaoDAO;
+import com.zapeat.exception.ApplicationException;
 import com.zapeat.http.HttpUtil;
 import com.zapeat.model.Promocao;
 import com.zapeat.model.Usuario;
@@ -38,9 +38,21 @@ public class PollService extends Service {
 	public void onStart(Intent intent, int startId) {
 
 		if (getUsuarioLogado() != null) {
-
+			
+			Criteria criteria = new Criteria();
+			criteria.setAccuracy(Criteria.ACCURACY_FINE);
+			criteria.setAltitudeRequired(false);
+			
+			
 			this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, -1, Constantes.GPS.DISTANCIA, new ZapeatLocationListener());
+			
+			this.locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, false), Constantes.GPS.FREQUENCIA_TEMPO, Constantes.GPS.DISTANCIA, new ZapeatLocationListener());
+			
+			Location location = this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if (location == null) {
+				location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			}
+			
 			new LocationTask(PollService.this).execute();
 
 		} else {
@@ -80,7 +92,6 @@ public class PollService extends Service {
 			this.service = service;
 		}
 
-		@SuppressLint("NewApi")
 		@Override
 		protected Boolean doInBackground(final String... args) {
 			initStrictMode();
@@ -120,9 +131,15 @@ public class PollService extends Service {
 
 						editor.commit();
 
-						Thread.sleep(Constantes.Services.TRES_HORAS);
+					} catch (ApplicationException ex) {
+						ex.printStackTrace();
+					} finally {
 
-					} catch (Exception ex) {
+						try {
+							Thread.sleep(Constantes.Services.PERIODICIDADE);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 
 					}
 				}
@@ -177,7 +194,7 @@ public class PollService extends Service {
 
 	private String makePromocaoMessage(Promocao promocao) {
 
-		StringBuilder message = new StringBuilder(promocao.getLocalidade()).append(" - ").append(promocao.getDescricao());
+		StringBuilder message = new StringBuilder(promocao.getLocalidade()).append(" - ").append(promocao.getDescricao()).append(" De ").append(promocao.getPrecoOriginal()).append(" por ").append(promocao.getPrecoPromocional());
 
 		return message.toString();
 
@@ -195,7 +212,7 @@ public class PollService extends Service {
 
 			PendingIntent activity = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
 			notification.setLatestEventInfo(getApplicationContext(), "Zapeat", makePromocaoMessage(promocao), activity);
-			notificationManager.notify(0, notification);
+			notificationManager.notify(promocao.getId().intValue(), notification);
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -220,6 +237,7 @@ public class PollService extends Service {
 			buildMethod.invoke(null);
 
 		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
 	}
 
