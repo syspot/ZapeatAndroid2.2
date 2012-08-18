@@ -13,7 +13,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.Criteria;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -28,6 +28,7 @@ import com.zapeat.http.HttpUtil;
 import com.zapeat.model.Promocao;
 import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
+import com.zapeat.util.Utilitario;
 
 public class PollService extends Service {
 
@@ -38,21 +39,16 @@ public class PollService extends Service {
 	public void onStart(Intent intent, int startId) {
 
 		if (getUsuarioLogado() != null) {
-			
-			Criteria criteria = new Criteria();
-			criteria.setAccuracy(Criteria.ACCURACY_FINE);
-			criteria.setAltitudeRequired(false);
-			
-			
+
 			this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			
-			this.locationManager.requestLocationUpdates(locationManager.getBestProvider(criteria, false), Constantes.GPS.FREQUENCIA_TEMPO, Constantes.GPS.DISTANCIA, new ZapeatLocationListener());
-			
+
+			this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constantes.GPS.FREQUENCIA_TEMPO, Constantes.GPS.DISTANCIA, new ZapeatLocationListener());
+
 			Location location = this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			if (location == null) {
 				location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 			}
-			
+
 			new LocationTask(PollService.this).execute();
 
 		} else {
@@ -123,6 +119,17 @@ public class PollService extends Service {
 
 						promocaoDAO.inserir(promocoesNovas, getApplicationContext());
 
+						Bitmap imagem = null;
+
+						for (Promocao promocao : promocoesNovas) {
+
+							if (!Utilitario.existsImage(promocao.getIdFornecedor())) {
+								imagem = HttpUtil.downloadBitmap(promocao.getIdFornecedor());
+								Utilitario.storeImage(imagem, promocao.getIdFornecedor());
+							}
+
+						}
+
 						SharedPreferences.Editor editor = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).edit();
 
 						editor.remove(Constantes.Preferencias.ULTIMA_ATUALIZACAO);
@@ -153,7 +160,7 @@ public class PollService extends Service {
 		@Override
 		public void onLocationChanged(Location location) {
 
-			float[] result = new float[10];
+			float[] result = new float[4];
 
 			for (Promocao promocao : promocaoDAO.pesquisar(getApplicationContext())) {
 

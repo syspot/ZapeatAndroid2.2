@@ -15,7 +15,7 @@ import com.zapeat.util.Utilitario;
 
 public class PromocaoDAO {
 
-	private String[] colunas = new String[] { "id", "descricao", "latitude", "longitude", "localidade", "hora_final", "data_final", "preco_original", "preco_promocional" };
+	private String[] colunas = new String[] { "id", "descricao", "latitude", "longitude", "localidade", "hora_final", "data_final", "preco_original", "preco_promocional", "id_fornecedor" };
 
 	public List<Promocao> pesquisar(Context context) {
 
@@ -70,12 +70,12 @@ public class PromocaoDAO {
 			promocao = this.createPromocao(cursor);
 
 			if (promocao != null && Utilitario.isAfterToday(promocao.getDataFinal())) {
-				
+
 				try {
 					promocao.setDataFinal(Utilitario.formatBrasil(promocao.getDataFinal()));
 				} catch (Exception ex) {
 				}
-				
+
 				promocoes.add(promocao);
 			}
 
@@ -109,9 +109,10 @@ public class PromocaoDAO {
 		promocao.setLongitude(cursor.getDouble(3));
 		promocao.setLocalidade(cursor.getString(4));
 		promocao.setHoraFinal(cursor.getString(5));
-		promocao.setDataFinal( cursor.getString(6));
+		promocao.setDataFinal(cursor.getString(6));
 		promocao.setPrecoOriginal(cursor.getString(7));
 		promocao.setPrecoPromocional(cursor.getString(8));
+		promocao.setIdFornecedor(cursor.getLong(9));
 		return promocao;
 
 	}
@@ -134,6 +135,7 @@ public class PromocaoDAO {
 			initialValues.put("DATA_FINAL", promocao.getDataFinal());
 			initialValues.put("PRECO_ORIGINAL", promocao.getPrecoOriginal());
 			initialValues.put("PRECO_PROMOCIONAL", promocao.getPrecoPromocional());
+			initialValues.put("ID_FORNECEDOR", promocao.getIdFornecedor());
 
 			db.insert(DBUtil.Tabelas.PROMOCOES, null, initialValues);
 

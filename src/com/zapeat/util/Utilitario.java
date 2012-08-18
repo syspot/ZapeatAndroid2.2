@@ -1,8 +1,14 @@
 package com.zapeat.util;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 
 public class Utilitario {
 
@@ -45,4 +51,52 @@ public class Utilitario {
 		return formatBrasil.format(Utilitario.parse(date));
 	}
 
+	public static void storeImage(Bitmap image, Long idFornecedor) {
+		String diretorio = Environment.getExternalStorageDirectory().toString();
+		String fileName = idFornecedor.toString() + Constantes.Storage.EXTENSAO;
+		File file = new File(diretorio, fileName);
+
+		if (file.exists()) {
+			file.delete();
+		}
+
+		try {
+
+			if (file.createNewFile()) {
+				FileOutputStream out = new FileOutputStream(file);
+				image.compress(Bitmap.CompressFormat.PNG, 90, out);
+				out.flush();
+				out.close();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+
+	}
+
+	public static boolean existsImage(Long idFornecedor) {
+		String diretorio = Environment.getExternalStorageDirectory().toString();
+		String fileName = idFornecedor.toString() + Constantes.Storage.EXTENSAO;
+		return new File(diretorio, fileName).exists();
+	}
+
+	public static Bitmap getImage(Long idFornecedor) {
+
+		String diretorio = Environment.getExternalStorageDirectory().toString();
+
+		File imgFile = new File(diretorio + File.separator + idFornecedor.toString() + Constantes.Storage.EXTENSAO);
+
+		if (imgFile.exists()) {
+
+			Bitmap bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+
+			return bmp;
+
+		}
+
+		return null;
+
+	}
 }

@@ -9,9 +9,11 @@ import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -21,6 +23,9 @@ import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.zapeat.exception.ApplicationException;
 import com.zapeat.model.Promocao;
@@ -93,6 +98,48 @@ public class HttpUtil {
 			throw new ApplicationException(ex);
 		}
 
+	}
+
+	public static Bitmap downloadBitmap(Long idFornecedor) {
+
+		HttpParams httpParameters = new BasicHttpParams();
+
+		int timeoutConnection = 5000;
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+
+		HttpClient httpclient = new DefaultHttpClient(httpParameters);
+
+		HttpGet getRequest = new HttpGet(Constantes.Http.URL_DOWNLOAD_IMAGE_FORNECEDOR + "?id=" + idFornecedor);
+
+		try {
+			HttpResponse response = httpclient.execute(getRequest);
+
+			final int statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode != HttpStatus.SC_OK) {
+				return null;
+			}
+
+			final HttpEntity entity = response.getEntity();
+			if (entity != null) {
+				InputStream inputStream = null;
+				try {
+					inputStream = entity.getContent();
+					final Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+					return bitmap;
+				} finally {
+					if (inputStream != null) {
+						inputStream.close();
+					}
+					entity.consumeContent();
+				}
+			}
+		} catch (Exception e) {
+
+			getRequest.abort();
+
+		}
+
+		return null;
 	}
 
 	private static Usuario readJson(HttpResponse response) throws ApplicationException {
@@ -184,10 +231,12 @@ public class HttpUtil {
 			promocao.setHoraFinal(jsonPromo.getString(Constantes.JsonProperties.HORA_FINAL));
 
 			promocao.setDataFinal(jsonPromo.getString(Constantes.JsonProperties.DATA_FINAL));
-			
+
 			promocao.setPrecoOriginal(jsonPromo.getString(Constantes.JsonProperties.PRECO_ORIGINAL));
-			
+
 			promocao.setPrecoPromocional(jsonPromo.getString(Constantes.JsonProperties.PRECO_PROMOCIONAL));
+
+			promocao.setIdFornecedor(jsonPromo.getLong(Constantes.JsonProperties.ID_FORNECEDOR));
 
 			promocoes.add(promocao);
 

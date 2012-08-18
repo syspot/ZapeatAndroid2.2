@@ -2,6 +2,7 @@ package com.zapeat.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,8 +12,10 @@ import android.widget.Toast;
 
 import com.zapeat.dao.PromocaoDAO;
 import com.zapeat.http.HttpUtil;
+import com.zapeat.model.Promocao;
 import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
+import com.zapeat.util.Utilitario;
 
 public class AuthActivity extends DefaultActivity implements OnClickListener {
 
@@ -76,6 +79,8 @@ public class AuthActivity extends DefaultActivity implements OnClickListener {
 
 	private void redirecionar(Usuario usuario) {
 
+		super.initStrictMode();
+
 		SharedPreferences.Editor editor = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).edit();
 
 		editor.putInt(Constantes.Preferencias.USUARIO_LOGADO, usuario.getId());
@@ -87,6 +92,17 @@ public class AuthActivity extends DefaultActivity implements OnClickListener {
 		promocaoDAO.clean(getApplicationContext());
 
 		promocaoDAO.inserir(usuario.getPromocoes(), getApplicationContext());
+
+		Bitmap imagem = null;
+
+		for (Promocao promocao : usuario.getPromocoes()) {
+
+			if (!Utilitario.existsImage(promocao.getIdFornecedor())) {
+				imagem = HttpUtil.downloadBitmap(promocao.getIdFornecedor());
+				Utilitario.storeImage(imagem, promocao.getIdFornecedor());
+			}
+
+		}
 
 		this.startActivity(new Intent(this, PromocaoListActivity.class));
 

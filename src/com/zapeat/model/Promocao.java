@@ -14,6 +14,7 @@ public class Promocao {
 	private String horaFinal;
 	private String precoOriginal;
 	private String precoPromocional;
+	private Long idFornecedor;
 
 	public String getLocalidade() {
 		return localidade;
@@ -93,6 +94,14 @@ public class Promocao {
 
 	public void setPrecoPromocional(String precoPromocional) {
 		this.precoPromocional = precoPromocional;
+	}
+
+	public Long getIdFornecedor() {
+		return idFornecedor;
+	}
+
+	public void setIdFornecedor(Long idFornecedor) {
+		this.idFornecedor = idFornecedor;
 	}
 
 	@Override

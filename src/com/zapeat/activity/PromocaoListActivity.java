@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.zapeat.dao.PromocaoDAO;
 import com.zapeat.http.HttpUtil;
 import com.zapeat.model.Promocao;
 import com.zapeat.util.Constantes;
+import com.zapeat.util.Utilitario;
 
 public class PromocaoListActivity extends DefaultActivity implements OnClickListener {
 
@@ -120,15 +122,21 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 		dialog.setTitle("Detalhes da promoção");
 
 		TextView text = (TextView) dialog.findViewById(R.id.textDialogPromocao);
-		text.setText(promocao.getLocalidade() + "\n\n" + promocao.getDescricao()
-						+ "\n de " + promocao.getPrecoOriginal() + " por " + promocao.getPrecoPromocional() 
-						+ "\n\n Esta promoção encerra em " + promocao.getDataFinal() + " às " + promocao.getHoraFinal() + "\n\n");
+		text.setText(promocao.getLocalidade() + "\n\n" + promocao.getDescricao() + "\n de " + promocao.getPrecoOriginal() + " por " + promocao.getPrecoPromocional() + "\n\n Esta promoção encerra em " + promocao.getDataFinal() + " às " + promocao.getHoraFinal() + "\n\n");
 
 		Button dialogButton = (Button) dialog.findViewById(R.id.btFecharDialogPromocao);
-		
+
 		ImageView image = (ImageView) dialog.findViewById(R.id.imageDialogPromocao);
 
-		image.setImageResource(R.drawable.ic_launcher);
+		Bitmap bmp = Utilitario.getImage(promocao.getIdFornecedor());
+
+		if (bmp == null) {
+
+			image.setImageResource(R.drawable.ic_launcher);
+
+		} else {
+			image.setImageBitmap(bmp);
+		}
 
 		dialogButton.setOnClickListener(new OnClickListener() {
 			@Override

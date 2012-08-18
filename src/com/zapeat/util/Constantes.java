@@ -15,8 +15,8 @@ public class Constantes {
 	}
 
 	public interface GPS {
-		int DISTANCIA = 5;//;000; // metros
-		int FREQUENCIA_TEMPO= 1000 * 5;//;000; // metros
+		int DISTANCIA = 1;//;000; // metros
+		int FREQUENCIA_TEMPO= 1000;//1 minuto 
 		float DISTANCIA_ALERT_PROMOCAO = 1000;
 	}
 
@@ -39,6 +39,7 @@ public class Constantes {
 		String PROMOCOES = "promocoes";
 		String LOGADO = "logged";
 		String USUARIO_ID = "usuarioId";
+		String ID_FORNECEDOR = "idFornecedor";
 
 	}
 
@@ -49,11 +50,18 @@ public class Constantes {
 			String FALHA_AUTENTICACAO = "A autenticação falhou por motivos técnicos. Tente novamente mais tarde";
 		}
 
-		String URL_AUTH = "http://192.168.1.105:8080/TestAndroid/autenticar";
-		String URL_PROMOCOES = "http://192.168.1.105:8080/TestAndroid/promocoes";
+		String URL_AUTH = "http://192.168.0.17:8080/TestAndroid/autenticar";
+		String URL_PROMOCOES = "http://192.168.0.17:8080/TestAndroid/promocoes";
 		String URL_ZAPEAT = "http://www.google.com.br";
 		String PARAMETRO_RETORNO = "PARAM_RETORNO";
 		String PARAMETRO_LOGIN = "login";
 		String PARAMETRO_SENHA = "senha";
+		String URL_DOWNLOAD_IMAGE_FORNECEDOR = "http://www.iconlet.com/icons/nuvola/16x16/camera_test.png";
+		//String URL_DOWNLOAD_IMAGE_FORNECEDOR = "http://192.168.0.17:8080/TestAndroid/imagemFornecedor";
+	}
+	
+	public interface Storage {
+		String EXTENSAO = ".png";
+		String DIRETORIO_ZAPEAT = "/zapeat/";
 	}
 }
