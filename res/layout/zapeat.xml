@@ -4,8 +4,6 @@
     android:layout_height="fill_parent"
     android:background="@drawable/shapebutton" >
 
-    <requestFocus />
-
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
@@ -13,6 +11,19 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:src="@drawable/ic_launcher" />
+    
+    <requestFocus/>
+    
+    <EditText
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/senha"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:ems="10"
+        android:layout_below="@+id/logo"
+        android:hint="@string/login" />
 
     <EditText
         android:id="@+id/senha"
@@ -21,6 +32,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:ems="10"
+        android:layout_below="@+id/login"
         android:hint="@string/senha"
         android:inputType="textPassword" />
 
@@ -34,15 +46,6 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/shapebutton"
         android:text="@string/autenticar" />
-
-    <EditText
-        android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/senha"
-        android:layout_alignLeft="@+id/senha"
-        android:layout_marginBottom="32dp"
-        android:ems="10"
-        android:hint="@string/login" />
+    
 
 </RelativeLayout>

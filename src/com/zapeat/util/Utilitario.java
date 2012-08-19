@@ -52,9 +52,13 @@ public class Utilitario {
 	}
 
 	public static void storeImage(Bitmap image, Long idFornecedor) {
-		String diretorio = Environment.getExternalStorageDirectory().toString();
+
+		if (!new File(Constantes.Storage.DIRETORIO_ZAPEAT).isDirectory()) {
+			new File(Constantes.Storage.DIRETORIO_ZAPEAT).mkdir();
+		}
+
 		String fileName = idFornecedor.toString() + Constantes.Storage.EXTENSAO;
-		File file = new File(diretorio, fileName);
+		File file = new File(Constantes.Storage.DIRETORIO_ZAPEAT, fileName);
 
 		if (file.exists()) {
 			file.delete();
@@ -77,16 +81,13 @@ public class Utilitario {
 	}
 
 	public static boolean existsImage(Long idFornecedor) {
-		String diretorio = Environment.getExternalStorageDirectory().toString();
 		String fileName = idFornecedor.toString() + Constantes.Storage.EXTENSAO;
-		return new File(diretorio, fileName).exists();
+		return new File(Constantes.Storage.DIRETORIO_ZAPEAT, fileName).exists();
 	}
 
 	public static Bitmap getImage(Long idFornecedor) {
 
-		String diretorio = Environment.getExternalStorageDirectory().toString();
-
-		File imgFile = new File(diretorio + File.separator + idFornecedor.toString() + Constantes.Storage.EXTENSAO);
+		File imgFile = new File(Constantes.Storage.DIRETORIO_ZAPEAT + File.separator + idFornecedor.toString() + Constantes.Storage.EXTENSAO);
 
 		if (imgFile.exists()) {
 

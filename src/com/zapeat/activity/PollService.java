@@ -32,22 +32,18 @@ import com.zapeat.util.Utilitario;
 
 public class PollService extends Service {
 
-	private LocationManager locationManager;
+	private static LocationManager locationManager;
 	private PromocaoDAO promocaoDAO = new PromocaoDAO();
+	private static Location lastLocation;
 
 	@Override
 	public void onStart(Intent intent, int startId) {
 
 		if (getUsuarioLogado() != null) {
 
-			this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-			this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constantes.GPS.FREQUENCIA_TEMPO, Constantes.GPS.DISTANCIA, new ZapeatLocationListener());
-
-			Location location = this.locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if (location == null) {
-				location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-			}
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constantes.GPS.FREQUENCIA_TEMPO, Constantes.GPS.DISTANCIA, new ZapeatLocationListener());
 
 			new LocationTask(PollService.this).execute();
 
@@ -160,6 +156,8 @@ public class PollService extends Service {
 		@Override
 		public void onLocationChanged(Location location) {
 
+			lastLocation = location;
+
 			float[] result = new float[4];
 
 			for (Promocao promocao : promocaoDAO.pesquisar(getApplicationContext())) {
@@ -248,4 +246,7 @@ public class PollService extends Service {
 		}
 	}
 
+	public static Location getLastLocation() {
+		return lastLocation;
+	}
 }

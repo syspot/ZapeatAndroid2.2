@@ -6,15 +6,19 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,8 +35,10 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 	private ListView listViewPromocoes;
 	private ListPromocaoAdapter adapter;
 	private Button btAtualizar;
+	private Button btFiltroDistancia;
 	private Button btSair;
 	private Button btWeb;
+	private EditText filtroDistancia;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +53,8 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 		this.btAtualizar.setOnClickListener(this);
 		this.btSair = (Button) findViewById(R.id.btSairList);
 		this.btWeb = (Button) findViewById(R.id.btWeb);
+		this.btFiltroDistancia = (Button) findViewById(R.id.btFiltrarDIstancia);
+		this.filtroDistancia = (EditText) findViewById(R.id.filtroDistancia);
 		this.initPromocoes();
 		this.initListeners();
 
@@ -114,6 +122,17 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 		this.listViewPromocoes.setOnItemClickListener(itemClick);
 
+		OnClickListener clickFiltroDistancia = new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				filtrarDistancia();
+
+			}
+		};
+
+		this.btFiltroDistancia.setOnClickListener(clickFiltroDistancia);
+
 	}
 
 	private void showDialogPromocao(Promocao promocao) {
@@ -156,7 +175,7 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 		List<Promocao> promocoesAtuais = null;
 		Promocao nova = null;
 		PromocaoDAO dao = new PromocaoDAO();
-
+		this.filtroDistancia.setText("");
 		if (getUsuarioLogado() != null) {
 
 			try {
@@ -195,4 +214,48 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 	}
 
+	private void filtrarDistancia() {
+
+		String txtFiltro = this.filtroDistancia.getText().toString();
+
+		if (txtFiltro != null && !"".equals(txtFiltro)) {
+
+			List<Promocao> promocoes = new PromocaoDAO().pesquisarTodas(getApplicationContext());
+
+			Iterator<Promocao> iterador = promocoes.iterator();
+
+			Promocao promo = null;
+
+			float distancia = Float.valueOf(this.filtroDistancia.getText().toString());
+
+			float[] distanciaCalculada = new float[4];
+
+			Location location = PollService.getLastLocation();
+
+			if (location != null) {
+
+				while (iterador.hasNext()) {
+
+					promo = iterador.next();
+
+					Location.distanceBetween(promo.getLatitude(), promo.getLongitude(), location.getLatitude(), location.getLongitude(), distanciaCalculada);
+
+					if (distanciaCalculada != null && distanciaCalculada.length >= 0 && distanciaCalculada[0] > distancia) {
+						iterador.remove();
+					}
+
+				}
+
+			} else {
+
+				promocoes.clear();
+
+			}
+
+			this.adapter = new ListPromocaoAdapter(this, promocoes);
+
+			this.listViewPromocoes.setAdapter(this.adapter);
+		}
+
+	}
 }

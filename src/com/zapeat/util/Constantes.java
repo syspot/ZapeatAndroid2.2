@@ -1,5 +1,9 @@
 package com.zapeat.util;
 
+import java.io.File;
+
+import android.os.Environment;
+
 public class Constantes {
 
 	private Constantes() {
@@ -62,6 +66,6 @@ public class Constantes {
 	
 	public interface Storage {
 		String EXTENSAO = ".png";
-		String DIRETORIO_ZAPEAT = "/zapeat/";
+		String DIRETORIO_ZAPEAT = Environment.getExternalStorageDirectory().toString() + File.separator + "zapeat";
 	}
 }
