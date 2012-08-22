@@ -78,6 +78,7 @@ public class PollService extends Service {
 
 	private class LocationTask extends AsyncTask<String, Void, Boolean> {
 
+		@SuppressWarnings("unused")
 		private Service service;
 
 		public LocationTask(Service service) {
@@ -119,9 +120,9 @@ public class PollService extends Service {
 
 						for (Promocao promocao : promocoesNovas) {
 
-							if (!Utilitario.existsImage(promocao.getIdFornecedor())) {
-								imagem = HttpUtil.downloadBitmap(promocao.getIdFornecedor());
-								Utilitario.storeImage(imagem, promocao.getIdFornecedor());
+							if (!Utilitario.existsImage(promocao.getId())) {
+								imagem = HttpUtil.downloadBitmap(promocao.getId());
+								Utilitario.storeImage(imagem, promocao.getId());
 							}
 
 						}

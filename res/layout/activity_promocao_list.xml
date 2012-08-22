@@ -20,30 +20,6 @@
             android:paddingLeft="15dp"
             android:text="@string/atualizar"
             android:textSize="11dp" />
-        
-            <requestFocus />
-
-        <Button
-            android:id="@+id/btWeb"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.01"
-            android:background="@drawable/shapebutton"
-            android:drawableLeft="@drawable/www"
-            android:paddingLeft="15dp"
-            android:text="@string/web"
-            android:textSize="11dp" />
-
-        <Button
-            android:id="@+id/btSairList"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.01"
-            android:background="@drawable/shapebutton"
-            android:drawableLeft="@drawable/logout"
-            android:paddingLeft="15dp"
-            android:text="@string/sair"
-            android:textSize="11dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -51,22 +27,6 @@
         android:layout_height="wrap_content"
         android:background="#C0C0C0"
         android:orientation="horizontal" >
-
-        <EditText
-            android:id="@+id/filtroDistancia"
-            android:layout_width="77dp"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:textSize="11dp" >
-        </EditText>
-
-        <Button
-            android:id="@+id/btFiltrarDIstancia"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_action_search"
-            android:text="@string/filtrar_distancia"
-            android:textSize="10dp" />
     </LinearLayout>
 
     <ListView
@@ -77,6 +37,6 @@
         android:divider="#ECECEC"
         android:dividerHeight="3sp"
         android:footerDividersEnabled="true"
-        android:headerDividersEnabled="true" />
+        android:headerDividersEnabled="true"/>
 
 </LinearLayout>

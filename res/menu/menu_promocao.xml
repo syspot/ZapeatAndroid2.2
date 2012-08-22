@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/filtrar"
+        android:title="@string/filtrar"
+        android:icon="@drawable/filter"/>
+    <item
+        android:id="@+id/web"
+        android:title="@string/web"
+        android:icon="@drawable/www"
+        />
+    <item
+        android:id="@+id/sair"
+        android:title="@string/sair"
+       android:icon="@drawable/logout"/>
+
+</menu>

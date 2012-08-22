@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/promocoes"
+        android:icon="@drawable/food"
+        android:title="@string/promocoes"/>
+    <item
+        android:id="@+id/sair"
+        android:icon="@drawable/logout"
+        android:title="@string/sair"/>
+
+</menu>

@@ -97,9 +97,9 @@ public class AuthActivity extends DefaultActivity implements OnClickListener {
 
 		for (Promocao promocao : usuario.getPromocoes()) {
 
-			if (!Utilitario.existsImage(promocao.getIdFornecedor())) {
-				imagem = HttpUtil.downloadBitmap(promocao.getIdFornecedor());
-				Utilitario.storeImage(imagem, promocao.getIdFornecedor());
+			if (!Utilitario.existsImage(promocao.getId())) {
+				imagem = HttpUtil.downloadBitmap(promocao.getId());
+				Utilitario.storeImage(imagem, promocao.getId());
 			}
 
 		}

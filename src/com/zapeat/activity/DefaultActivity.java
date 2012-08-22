@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
+import com.zapeat.util.Utilitario;
 
 public class DefaultActivity extends Activity {
 
@@ -73,6 +74,8 @@ public class DefaultActivity extends Activity {
 
 		stopMonitoring();
 
+		Utilitario.cleanDirectory();
+
 	}
 
 	protected void alterarUltimaAtualizacaoPromocoes() {
@@ -108,5 +111,4 @@ public class DefaultActivity extends Activity {
 		}
 
 	}
-
 }

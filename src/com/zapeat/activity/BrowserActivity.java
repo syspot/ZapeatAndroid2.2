@@ -2,18 +2,15 @@ package com.zapeat.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 
 import com.zapeat.util.Constantes;
 
 public class BrowserActivity extends DefaultActivity {
-
-	private Button btSair;
-	private Button btPromocoes;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -22,48 +19,44 @@ public class BrowserActivity extends DefaultActivity {
 		WebView ecra = (WebView) findViewById(R.id.wvBrowser);
 		ecra.setWebViewClient(new WebViewClient());
 		ecra.loadUrl(Constantes.Http.URL_ZAPEAT);
-		this.initComponents();
-		this.initListeners();
 
 	}
 
-	private void initComponents() {
-		this.btSair = (Button) findViewById(R.id.btSair);
-		this.btPromocoes = (Button) findViewById(R.id.btPromo);
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_browser, menu);
+		return true;
 	}
 
-	private void initListeners() {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
 
-		OnClickListener onClickSair = new OnClickListener() {
-			@Override
-			public void onClick(View v) {
+		case R.id.promocoes:
 
-				sair();
+			Intent intent = new Intent(this, PromocaoListActivity.class);
 
-				Intent intent = new Intent(BrowserActivity.this, AuthActivity.class);
+			startActivity(intent);
 
-				startActivity(intent);
+			finish();
 
-				finish();
-			}
-		};
+			return true;
 
-		OnClickListener onClickPromo = new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(BrowserActivity.this, PromocaoListActivity.class);
+		case R.id.sair:
 
-				startActivity(intent);
+			super.sair();
 
-				finish();
+			Intent intentSair = new Intent(this, AuthActivity.class);
 
-			}
-		};
+			startActivity(intentSair);
 
-		this.btSair.setOnClickListener(onClickSair);
+			finish();
 
-		this.btPromocoes.setOnClickListener(onClickPromo);
-
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 }

@@ -49,7 +49,7 @@ public class ListPromocaoAdapter extends BaseAdapter {
 
 		ImageView image = (ImageView) convertView.findViewById(R.id.list_image);
 
-		Bitmap bmp = Utilitario.getImage(item.getIdFornecedor());
+		Bitmap bmp = Utilitario.getImage(item.getId());
 
 		if (bmp != null) {
 			image.setImageBitmap(bmp);

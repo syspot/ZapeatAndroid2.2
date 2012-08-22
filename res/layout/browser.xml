@@ -10,27 +10,6 @@
           android:background="#C0C0C0"
           android:orientation="horizontal" >
 
-          <Button
-              android:id="@+id/btPromo"
-              android:layout_width="0dp"
-              android:layout_height="wrap_content"
-              android:layout_weight="0.01"
-              android:background="@drawable/shapebutton"
-              android:drawableLeft="@drawable/cart"
-              android:paddingLeft="20dp"
-              android:text="Ir para promoções do dia"
-              android:textSize="11dp" />
-
-          <Button
-              android:id="@+id/btSair"
-              android:layout_width="84dp"
-              android:layout_height="fill_parent"
-              android:background="@drawable/shapebutton"
-              android:drawableLeft="@drawable/logout"
-              android:paddingLeft="20dp"
-              android:text="Sair"
-              android:textSize="11dp" />
-
       </LinearLayout>
 
     <WebView

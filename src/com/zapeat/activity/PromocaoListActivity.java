@@ -6,19 +6,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,10 +34,6 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 	private ListView listViewPromocoes;
 	private ListPromocaoAdapter adapter;
 	private Button btAtualizar;
-	private Button btFiltroDistancia;
-	private Button btSair;
-	private Button btWeb;
-	private EditText filtroDistancia;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,16 +46,53 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 		this.btAtualizar = (Button) findViewById(R.id.btAtualizarPromocao);
 		this.btAtualizar.setOnClickListener(this);
-		this.btSair = (Button) findViewById(R.id.btSairList);
-		this.btWeb = (Button) findViewById(R.id.btWeb);
-		this.btFiltroDistancia = (Button) findViewById(R.id.btFiltrarDIstancia);
-		this.filtroDistancia = (EditText) findViewById(R.id.filtroDistancia);
 		this.initPromocoes();
 		this.initListeners();
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		this.ultimaAtualizacao = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).getString(Constantes.Preferencias.ULTIMA_ATUALIZACAO, dateFormat.format(new Date()));
 		this.btAtualizar.setText("Atualizado às \n" + this.ultimaAtualizacao);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_promocao, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+		case R.id.filtrar:
+
+			return true;
+
+		case R.id.web:
+
+			Intent intent = new Intent(PromocaoListActivity.this, BrowserActivity.class);
+
+			startActivity(intent);
+
+			finish();
+
+			return true;
+
+		case R.id.sair:
+
+			super.sair();
+
+			Intent intentSair = new Intent(PromocaoListActivity.this, AuthActivity.class);
+
+			startActivity(intentSair);
+
+			finish();
+
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void initPromocoes() {
@@ -74,41 +106,6 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 	}
 
 	private void initListeners() {
-
-		OnClickListener sair = new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				sair();
-
-				Intent intent = new Intent(PromocaoListActivity.this, AuthActivity.class);
-
-				startActivity(intent);
-
-				finish();
-
-			}
-		};
-
-		this.btSair.setOnClickListener(sair);
-
-		OnClickListener web = new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				Intent intent = new Intent(PromocaoListActivity.this, BrowserActivity.class);
-
-				startActivity(intent);
-
-				finish();
-
-			}
-		};
-
-		this.btWeb.setOnClickListener(web);
-
 		OnItemClickListener itemClick = new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -121,17 +118,6 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 		};
 
 		this.listViewPromocoes.setOnItemClickListener(itemClick);
-
-		OnClickListener clickFiltroDistancia = new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				filtrarDistancia();
-
-			}
-		};
-
-		this.btFiltroDistancia.setOnClickListener(clickFiltroDistancia);
 
 	}
 
@@ -147,7 +133,7 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 		ImageView image = (ImageView) dialog.findViewById(R.id.imageDialogPromocao);
 
-		Bitmap bmp = Utilitario.getImage(promocao.getIdFornecedor());
+		Bitmap bmp = Utilitario.getImage(promocao.getId());
 
 		if (bmp == null) {
 
@@ -155,6 +141,10 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 		} else {
 			image.setImageBitmap(bmp);
+			image.setMaxHeight(130);
+			image.setMinimumHeight(130);
+			image.setMinimumWidth(130);
+			image.setMaxWidth(130);
 		}
 
 		dialogButton.setOnClickListener(new OnClickListener() {
@@ -175,7 +165,7 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 		List<Promocao> promocoesAtuais = null;
 		Promocao nova = null;
 		PromocaoDAO dao = new PromocaoDAO();
-		this.filtroDistancia.setText("");
+
 		if (getUsuarioLogado() != null) {
 
 			try {
@@ -214,48 +204,52 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 	}
 
-	private void filtrarDistancia() {
-
-		String txtFiltro = this.filtroDistancia.getText().toString();
-
-		if (txtFiltro != null && !"".equals(txtFiltro)) {
-
-			List<Promocao> promocoes = new PromocaoDAO().pesquisarTodas(getApplicationContext());
-
-			Iterator<Promocao> iterador = promocoes.iterator();
-
-			Promocao promo = null;
-
-			float distancia = Float.valueOf(this.filtroDistancia.getText().toString());
-
-			float[] distanciaCalculada = new float[4];
-
-			Location location = PollService.getLastLocation();
-
-			if (location != null) {
-
-				while (iterador.hasNext()) {
-
-					promo = iterador.next();
-
-					Location.distanceBetween(promo.getLatitude(), promo.getLongitude(), location.getLatitude(), location.getLongitude(), distanciaCalculada);
-
-					if (distanciaCalculada != null && distanciaCalculada.length >= 0 && distanciaCalculada[0] > distancia) {
-						iterador.remove();
-					}
-
-				}
-
-			} else {
-
-				promocoes.clear();
-
-			}
-
-			this.adapter = new ListPromocaoAdapter(this, promocoes);
-
-			this.listViewPromocoes.setAdapter(this.adapter);
-		}
-
-	}
+	// private void filtrarDistancia() {
+	//
+	// String txtFiltro = this.filtroDistancia.getText().toString();
+	//
+	// if (txtFiltro != null && !"".equals(txtFiltro)) {
+	//
+	// List<Promocao> promocoes = new
+	// PromocaoDAO().pesquisarTodas(getApplicationContext());
+	//
+	// Iterator<Promocao> iterador = promocoes.iterator();
+	//
+	// Promocao promo = null;
+	//
+	// float distancia =
+	// Float.valueOf(this.filtroDistancia.getText().toString());
+	//
+	// float[] distanciaCalculada = new float[4];
+	//
+	// Location location = PollService.getLastLocation();
+	//
+	// if (location != null) {
+	//
+	// while (iterador.hasNext()) {
+	//
+	// promo = iterador.next();
+	//
+	// Location.distanceBetween(promo.getLatitude(), promo.getLongitude(),
+	// location.getLatitude(), location.getLongitude(), distanciaCalculada);
+	//
+	// if (distanciaCalculada != null && distanciaCalculada.length >= 0 &&
+	// distanciaCalculada[0] > distancia) {
+	// iterador.remove();
+	// }
+	//
+	// }
+	//
+	// } else {
+	//
+	// promocoes.clear();
+	//
+	// }
+	//
+	// this.adapter = new ListPromocaoAdapter(this, promocoes);
+	//
+	// this.listViewPromocoes.setAdapter(this.adapter);
+	// }
+	//
+	// }
 }

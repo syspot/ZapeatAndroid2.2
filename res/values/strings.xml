@@ -13,9 +13,11 @@
     <string name="autenticar">Entrar</string>
     <string name="title_activity_list">Zapeat - Promoções</string>
     <string name="title_activity_promocao_list">Zapeat</string>
-    <string name="web">Web</string>
+    <string name="web">Ver +</string>
     <string name="sair">Sair</string>
     <string name="filtrar_distancia">Filtrar distância Máxima (m)</string>
     <string name="atualizar">Atualizado às \n 12:12:12 12:12</string>
+    <string name="filtrar">Filtrar</string>
+    <string name="promocoes">Promoções do dia</string>
     
 </resources>

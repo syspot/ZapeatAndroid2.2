@@ -59,6 +59,12 @@
             android:name=".PromocaoListActivity"
             android:label="@string/title_activity_promocao_list" >
         </activity>
+        
+        <uses-library android:name="com.google.android.maps"/>
+        
     </application>
 
 </manifest>
+
+
+<!-- 0FaYmGMb5hDFqrIZLxfYTkFr3EBdfu8moHIZOMg KEY GOOGLE -->

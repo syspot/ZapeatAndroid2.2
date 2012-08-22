@@ -8,7 +8,6 @@ import java.util.Date;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Environment;
 
 public class Utilitario {
 
@@ -51,13 +50,13 @@ public class Utilitario {
 		return formatBrasil.format(Utilitario.parse(date));
 	}
 
-	public static void storeImage(Bitmap image, Long idFornecedor) {
+	public static void storeImage(Bitmap image, Long idPromocao) {
 
 		if (!new File(Constantes.Storage.DIRETORIO_ZAPEAT).isDirectory()) {
 			new File(Constantes.Storage.DIRETORIO_ZAPEAT).mkdir();
 		}
 
-		String fileName = idFornecedor.toString() + Constantes.Storage.EXTENSAO;
+		String fileName = idPromocao.toString() + Constantes.Storage.EXTENSAO;
 		File file = new File(Constantes.Storage.DIRETORIO_ZAPEAT, fileName);
 
 		if (file.exists()) {
@@ -80,14 +79,35 @@ public class Utilitario {
 
 	}
 
-	public static boolean existsImage(Long idFornecedor) {
-		String fileName = idFornecedor.toString() + Constantes.Storage.EXTENSAO;
+	public static void cleanDirectory() {
+
+		File diretorio = new File(Constantes.Storage.DIRETORIO_ZAPEAT);
+
+		if (diretorio.isDirectory()) {
+			File[] arquivos = diretorio.listFiles();
+			if (arquivos != null) {
+
+				for (File arquivo : arquivos) {
+					if (arquivo.isFile()) {
+						arquivo.delete();
+					}
+				}
+
+			}
+
+			diretorio.delete();
+		}
+
+	}
+
+	public static boolean existsImage(Long idPromocao) {
+		String fileName = idPromocao.toString() + Constantes.Storage.EXTENSAO;
 		return new File(Constantes.Storage.DIRETORIO_ZAPEAT, fileName).exists();
 	}
 
-	public static Bitmap getImage(Long idFornecedor) {
+	public static Bitmap getImage(Long idPromocao) {
 
-		File imgFile = new File(Constantes.Storage.DIRETORIO_ZAPEAT + File.separator + idFornecedor.toString() + Constantes.Storage.EXTENSAO);
+		File imgFile = new File(Constantes.Storage.DIRETORIO_ZAPEAT + File.separator + idPromocao.toString() + Constantes.Storage.EXTENSAO);
 
 		if (imgFile.exists()) {
 
