@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,6 +37,12 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 	private ListView listViewPromocoes;
 	private ListPromocaoAdapter adapter;
 	private Button btAtualizar;
+	private AlertDialog dialog;
+	private String distanciaFiltro;
+	private final String KM_1 = "1 Km";
+	private final String KM_3 = "3 Km";
+	private final String KM_5 = "5 Km";
+	private final String SEM_DISTANCIA = "Ilimitada";
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,10 +57,43 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 		this.btAtualizar.setOnClickListener(this);
 		this.initPromocoes();
 		this.initListeners();
-
+		this.initDialog();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		this.ultimaAtualizacao = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).getString(Constantes.Preferencias.ULTIMA_ATUALIZACAO, dateFormat.format(new Date()));
 		this.btAtualizar.setText("Atualizado às \n" + this.ultimaAtualizacao);
+	}
+
+	private void initDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		builder.setTitle("Qual distância máxima?");
+
+		final CharSequence[] items = { SEM_DISTANCIA, KM_1, KM_3, KM_5 };
+
+		builder.setPositiveButton("Filtrar", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				filtrar();
+				dialog.cancel();
+			}
+		});
+
+		builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				dialog.cancel();
+			}
+		});
+
+		builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				distanciaFiltro = items[id].toString();
+				if (SEM_DISTANCIA.equals(distanciaFiltro)) {
+					distanciaFiltro = null;
+				}
+			}
+		});
+
+		this.dialog = builder.create();
+
 	}
 
 	@Override
@@ -66,6 +108,18 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 		switch (item.getItemId()) {
 
 		case R.id.filtrar:
+
+			this.dialog.show();
+
+			return true;
+
+		case R.id.mapa:
+
+			Intent intentMapa = new Intent(PromocaoListActivity.this, MapViewActivity.class);
+
+			startActivity(intentMapa);
+
+			finish();
 
 			return true;
 
@@ -204,52 +258,74 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 	}
 
-	// private void filtrarDistancia() {
-	//
-	// String txtFiltro = this.filtroDistancia.getText().toString();
-	//
-	// if (txtFiltro != null && !"".equals(txtFiltro)) {
-	//
-	// List<Promocao> promocoes = new
-	// PromocaoDAO().pesquisarTodas(getApplicationContext());
-	//
-	// Iterator<Promocao> iterador = promocoes.iterator();
-	//
-	// Promocao promo = null;
-	//
-	// float distancia =
-	// Float.valueOf(this.filtroDistancia.getText().toString());
-	//
-	// float[] distanciaCalculada = new float[4];
-	//
-	// Location location = PollService.getLastLocation();
-	//
-	// if (location != null) {
-	//
-	// while (iterador.hasNext()) {
-	//
-	// promo = iterador.next();
-	//
-	// Location.distanceBetween(promo.getLatitude(), promo.getLongitude(),
-	// location.getLatitude(), location.getLongitude(), distanciaCalculada);
-	//
-	// if (distanciaCalculada != null && distanciaCalculada.length >= 0 &&
-	// distanciaCalculada[0] > distancia) {
-	// iterador.remove();
-	// }
-	//
-	// }
-	//
-	// } else {
-	//
-	// promocoes.clear();
-	//
-	// }
-	//
-	// this.adapter = new ListPromocaoAdapter(this, promocoes);
-	//
-	// this.listViewPromocoes.setAdapter(this.adapter);
-	// }
-	//
-	// }
+	private void filtrar() {
+
+		if (this.distanciaFiltro != null && !"".equals(distanciaFiltro)) {
+
+			List<Promocao> promocoes = new PromocaoDAO().pesquisarTodas(getApplicationContext());
+
+			Iterator<Promocao> iterador = promocoes.iterator();
+
+			Promocao promo = null;
+
+			float distancia = this.getDistanciaFiltro();
+
+			float[] distanciaCalculada = new float[4];
+
+			Location location = PollService.getLastLocation();
+
+			if (location != null) {
+
+				while (iterador.hasNext()) {
+
+					promo = iterador.next();
+
+					Location.distanceBetween(promo.getLatitude(), promo.getLongitude(), location.getLatitude(), location.getLongitude(), distanciaCalculada);
+
+					if (distanciaCalculada != null && distanciaCalculada.length >= 0 && distanciaCalculada[0] > distancia) {
+						iterador.remove();
+					}
+
+				}
+
+				this.adapter = new ListPromocaoAdapter(this, promocoes);
+
+				this.listViewPromocoes.setAdapter(this.adapter);
+
+				if (promocoes.isEmpty()) {
+					super.makeInfoMessage(this, "Nenhuma promoção encontrada!");
+				}
+
+			} else {
+
+				super.makeInfoMessage(this, "Não foi possível obter localização atual, verifique as configurações de localização");
+
+				this.initPromocoes();
+
+			}
+
+		} else {
+
+			this.initPromocoes();
+
+		}
+
+	}
+
+	private float getDistanciaFiltro() {
+
+		if (KM_1.equals(this.distanciaFiltro)) {
+			return 1000f;
+		}
+
+		if (KM_3.equals(this.distanciaFiltro)) {
+			return 3000f;
+		}
+
+		if (KM_5.equals(this.distanciaFiltro)) {
+			return 5000f;
+		}
+		return 0;
+
+	}
 }

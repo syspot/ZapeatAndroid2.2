@@ -43,6 +43,16 @@ public class BrowserActivity extends DefaultActivity {
 
 			return true;
 
+		case R.id.mapa:
+
+			Intent intentMapa = new Intent(BrowserActivity.this, MapViewActivity.class);
+
+			startActivity(intentMapa);
+
+			finish();
+
+			return true;
+
 		case R.id.sair:
 
 			super.sair();

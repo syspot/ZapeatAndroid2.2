@@ -16,7 +16,7 @@ import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
 import com.zapeat.util.Utilitario;
 
-public class DefaultActivity extends Activity {
+public abstract class DefaultActivity extends Activity {
 
 	protected String ultimaAtualizacao;
 

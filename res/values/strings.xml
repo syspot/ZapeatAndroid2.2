@@ -19,5 +19,7 @@
     <string name="atualizar">Atualizado às \n 12:12:12 12:12</string>
     <string name="filtrar">Filtrar</string>
     <string name="promocoes">Promoções do dia</string>
-    
+    <string name="title_activity_map_view">Zapeat - Mapa</string>
+    <string name="mapa">Ir para o mapa</string>
+
 </resources>

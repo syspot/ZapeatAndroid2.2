@@ -55,7 +55,7 @@ public class Constantes {
 		}
 
 		String URL_AUTH = "http://192.168.0.17:8080/TestAndroid/autenticar";
-		String URL_PROMOCOES = "192.168.0.17:8080/TestAndroid/promocoes";
+		String URL_PROMOCOES = "http://192.168.0.17:8080/TestAndroid/promocoes";
 		String URL_ZAPEAT = "http://www.google.com.br";
 		String PARAMETRO_RETORNO = "PARAM_RETORNO";
 		String PARAMETRO_LOGIN = "login";

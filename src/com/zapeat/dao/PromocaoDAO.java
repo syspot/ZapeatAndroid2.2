@@ -17,7 +17,7 @@ public class PromocaoDAO {
 
 	private String[] colunas = new String[] { "id", "descricao", "latitude", "longitude", "localidade", "hora_final", "data_final", "preco_original", "preco_promocional", "id_fornecedor" };
 
-	public List<Promocao> pesquisar(Context context) {
+	public List<Promocao> pesquisarNaoNotificadas(Context context) {
 
 		List<Promocao> promocoes = new ArrayList<Promocao>();
 
@@ -62,6 +62,43 @@ public class PromocaoDAO {
 		qb.setTables(DBUtil.Tabelas.PROMOCOES);
 
 		Cursor cursor = qb.query(conexao.getReadableDatabase(), colunas, null, null, null, null, "DATA_ANUNCIO DESC");
+
+		cursor.moveToFirst();
+		Promocao promocao = null;
+		while (!cursor.isAfterLast()) {
+
+			promocao = this.createPromocao(cursor);
+
+			if (promocao != null && Utilitario.isAfterToday(promocao.getDataFinal())) {
+
+				try {
+					promocao.setDataFinal(Utilitario.formatBrasil(promocao.getDataFinal()));
+				} catch (Exception ex) {
+				}
+
+				promocoes.add(promocao);
+			}
+
+			cursor.moveToNext();
+		}
+
+		DBUtil.close(conexao, cursor);
+
+		return promocoes;
+
+	}
+
+	public List<Promocao> pesquisarTodas(Context context, String fornecedor) {
+
+		List<Promocao> promocoes = new ArrayList<Promocao>();
+		DBUtil conexao = DBUtil.getInstance(context);
+		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+		qb.setTables(DBUtil.Tabelas.PROMOCOES);
+
+		Cursor cursor = qb.query(conexao.getReadableDatabase(), colunas, null, null, null, null, "DATA_ANUNCIO DESC");
+
+		if (fornecedor != null)
+			qb.appendWhere("upper(localidade) like % " + fornecedor.toUpperCase() + "%");
 
 		cursor.moveToFirst();
 		Promocao promocao = null;

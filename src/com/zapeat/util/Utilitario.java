@@ -106,6 +106,10 @@ public class Utilitario {
 	}
 
 	public static Bitmap getImage(Long idPromocao) {
+		
+		if(idPromocao==null) {
+			return null;
+		}
 
 		File imgFile = new File(Constantes.Storage.DIRETORIO_ZAPEAT + File.separator + idPromocao.toString() + Constantes.Storage.EXTENSAO);
 

@@ -11,6 +11,10 @@
         android:icon="@drawable/www"
         />
     <item
+        android:id="@+id/mapa"
+        android:title="@string/mapa"
+        android:icon="@drawable/mapa"/>
+    <item
         android:id="@+id/sair"
         android:title="@string/sair"
        android:icon="@drawable/logout"/>

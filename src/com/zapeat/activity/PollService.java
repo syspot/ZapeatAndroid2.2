@@ -161,7 +161,7 @@ public class PollService extends Service {
 
 			float[] result = new float[4];
 
-			for (Promocao promocao : promocaoDAO.pesquisar(getApplicationContext())) {
+			for (Promocao promocao : promocaoDAO.pesquisarNaoNotificadas(getApplicationContext())) {
 
 				try {
 
