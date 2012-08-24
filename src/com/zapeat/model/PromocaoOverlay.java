@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 import com.zapeat.activity.R;
@@ -26,6 +25,7 @@ public class PromocaoOverlay extends ItemizedOverlay<OverlayItem> {
 	public PromocaoOverlay(Drawable defaultMarker) {
 		super(defaultMarker);
 		this.promocoes = new ArrayList<Promocao>();
+		 populate();
 	}
 
 	public void addOverlay(Promocao overlay) {
@@ -48,14 +48,7 @@ public class PromocaoOverlay extends ItemizedOverlay<OverlayItem> {
 		super(boundCenterBottom(defaultMarker));
 		this.context = context;
 		this.promocoes = new ArrayList<Promocao>();
-		Promocao promocao = new Promocao();
-		promocao.setDescricao("Default Zapeat");
-		promocao.setLocalidade("Default Zapeat");
-		promocao.setPrecoOriginal("R$0,00");
-		promocao.setPrecoPromocional("R$0,00");
-		promocao.setHoraFinal("00:00");
-		promocao.setDataFinal("00/00/0000");
-		addOverlay(new Promocao(new GeoPoint(8,-144),promocao));
+		 populate();
 	}
 
 	@Override

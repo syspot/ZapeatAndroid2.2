@@ -27,6 +27,10 @@ import com.zapeat.util.Utilitario;
 @SuppressLint("ShowToast")
 public class MapViewActivity extends MapActivity {
 
+	private  final int ZOOM = 11;
+	private final String ASK_DISTANCIA_MAXIMA = "Qual distância máxima?";
+	private final String SEM_LOCALIZACAO = "Não foi possível obter localização atual, verifique as configurações de localização";
+	private final String NENHUMA_PROMOÇÃO_ENCONTRADA = "Nenhuma promoção encontrada!";
 	private MapView mapView;
 	private AlertDialog dialog;
 	private String distanciaFiltro;
@@ -34,7 +38,6 @@ public class MapViewActivity extends MapActivity {
 	private final String KM_3 = "3 Km";
 	private final String KM_5 = "5 Km";
 	private final String SEM_DISTANCIA = "Ilimitada";
-	private PromocaoOverlay promocaoOverlay;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -45,20 +48,24 @@ public class MapViewActivity extends MapActivity {
 		mapView.setSatellite(true);
 		this.initPromocoes();
 		this.initDialog();
+		this.redirectLocation();
+	}
+
+	private void redirectLocation() {
+
+		mapView.getController().setZoom(ZOOM);
 
 		Location atual = PollService.getLastLocation();
 
-		mapView.getController().setZoom(11);
-
 		if (atual != null) {
 
-			GeoPoint geoPoint = new GeoPoint(Double.valueOf(atual.getLatitude()).intValue(), Double.valueOf(atual.getLongitude()).intValue());
+			GeoPoint geoPoint = new GeoPoint(Double.valueOf(atual.getLatitude() * 1E6).intValue(), Double.valueOf(atual.getLongitude() * 16).intValue());
 
 			mapView.getController().animateTo(geoPoint);
 
 		} else {
 
-			Toast.makeText(this, "Não foi possível obter localização atual, verifique as configurações de localização", Toast.LENGTH_LONG);
+			Toast.makeText(this, SEM_LOCALIZACAO, Toast.LENGTH_LONG);
 
 		}
 
@@ -67,7 +74,7 @@ public class MapViewActivity extends MapActivity {
 	private void initDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		builder.setTitle("Qual distância máxima?");
+		builder.setTitle(ASK_DISTANCIA_MAXIMA);
 
 		final CharSequence[] items = { SEM_DISTANCIA, KM_1, KM_3, KM_5 };
 
@@ -128,7 +135,7 @@ public class MapViewActivity extends MapActivity {
 
 			return true;
 
-		case R.id.web:
+		case R.id.webMapa:
 
 			Intent intent = new Intent(MapViewActivity.this, BrowserActivity.class);
 
@@ -177,13 +184,20 @@ public class MapViewActivity extends MapActivity {
 		GeoPoint geoPoint = null;
 		Promocao promocao = null;
 		List<Promocao> promocoes = new PromocaoDAO().pesquisarTodas(getApplicationContext());
+		this.mapView.getOverlays().add(new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this));
+		PromocaoOverlay overlay = null;
+
 		for (Promocao promo : promocoes) {
-			geoPoint = new GeoPoint(Double.valueOf(promo.getLatitude()).intValue(), Double.valueOf(promo.getLongitude()).intValue());
+
+			geoPoint = new GeoPoint(Double.valueOf(promo.getLatitude() * 1E6).intValue(), Double.valueOf(promo.getLongitude() * 1E6).intValue());
 			promocao = new Promocao(geoPoint, promo);
-			this.promocaoOverlay = new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this);
-			promocaoOverlay.addOverlay(promocao);
-			this.mapView.getOverlays().add(this.promocaoOverlay);
+			overlay = new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this);
+			overlay.addOverlay(promocao);
+			this.mapView.getOverlays().add(overlay);
+
 		}
+
+		this.mapView.postInvalidate();
 
 	}
 
@@ -191,58 +205,15 @@ public class MapViewActivity extends MapActivity {
 
 		if (this.distanciaFiltro != null && !"".equals(distanciaFiltro)) {
 
-			List<Promocao> promocoes = new PromocaoDAO().pesquisarTodas(getApplicationContext());
-
-			Iterator<Promocao> iterador = promocoes.iterator();
-
-			Promocao promo = null;
-
-			float distancia = this.getDistanciaFiltro();
-
-			float[] distanciaCalculada = new float[4];
-
 			Location location = PollService.getLastLocation();
 
 			if (location != null) {
 
-				this.mapView.getOverlays().clear();
-
-				this.mapView.invalidate();
-
-				this.promocaoOverlay = new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this);
-
-				while (iterador.hasNext()) {
-
-					promo = iterador.next();
-
-					Location.distanceBetween(promo.getLatitude(), promo.getLongitude(), location.getLatitude(), location.getLongitude(), distanciaCalculada);
-
-					if (distanciaCalculada != null && distanciaCalculada.length >= 0 && distanciaCalculada[0] > distancia) {
-						iterador.remove();
-					}
-
-				}
-
-				GeoPoint geoPoint = null;
-				Promocao promocao = null;
-
-				for (Promocao promocaoMapa : promocoes) {
-					geoPoint = new GeoPoint(Double.valueOf(promocaoMapa.getLatitude()).intValue(), Double.valueOf(promocaoMapa.getLongitude()).intValue());
-					promocao = new Promocao(geoPoint, promocaoMapa);
-					this.promocaoOverlay = new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this);
-					this.promocaoOverlay.addOverlay(promocao);
-					this.mapView.getOverlays().add(this.promocaoOverlay);
-				}
-
-				if (promocoes.isEmpty()) {
-					Toast t = Toast.makeText(this, "Nenhuma promoção encontrada!", Toast.LENGTH_LONG);
-					t.setGravity(Gravity.CENTER, 0, 0);
-					t.show();
-				}
+				this.initPromocoesByLocation(location);
 
 			} else {
 
-				Toast t = Toast.makeText(this, "Não foi possível obter localização atual, verifique as configurações de localização", Toast.LENGTH_LONG);
+				Toast t = Toast.makeText(this, SEM_LOCALIZACAO, Toast.LENGTH_LONG);
 				t.setGravity(Gravity.CENTER, 0, 0);
 				t.show();
 
@@ -272,6 +243,62 @@ public class MapViewActivity extends MapActivity {
 			return 5000f;
 		}
 		return 0;
+
+	}
+
+	private void initPromocoesByLocation(Location location) {
+
+		List<Promocao> promocoes = new PromocaoDAO().pesquisarTodas(getApplicationContext());
+
+		Iterator<Promocao> iterador = promocoes.iterator();
+
+		this.mapView.getOverlays().clear();
+
+		this.mapView.invalidate();
+
+		PromocaoOverlay promocaoOverlay = null;
+
+		Promocao promo = null;
+
+		float distancia = this.getDistanciaFiltro();
+
+		float[] distanciaCalculada = new float[4];
+
+		this.mapView.getOverlays().add(new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this));
+
+		while (iterador.hasNext()) {
+
+			promo = iterador.next();
+
+			Location.distanceBetween(promo.getLatitude(), promo.getLongitude(), location.getLatitude(), location.getLongitude(), distanciaCalculada);
+
+			if (distanciaCalculada != null && distanciaCalculada.length >= 0 && distanciaCalculada[0] > distancia) {
+				iterador.remove();
+			}
+
+		}
+
+		GeoPoint geoPoint = null;
+		Promocao promocao = null;
+
+		if (promocoes.isEmpty()) {
+			Toast t = Toast.makeText(this, NENHUMA_PROMOÇÃO_ENCONTRADA, Toast.LENGTH_LONG);
+			t.setGravity(Gravity.CENTER, 0, 0);
+			t.show();
+
+		} else {
+
+			for (Promocao promocaoMapa : promocoes) {
+				geoPoint = new GeoPoint(Double.valueOf(promocaoMapa.getLatitude() * 1E6).intValue(), Double.valueOf(promocaoMapa.getLongitude() * 1E6).intValue());
+				promocao = new Promocao(geoPoint, promocaoMapa);
+				promocaoOverlay = new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this);
+				promocaoOverlay.addOverlay(promocao);
+				this.mapView.getOverlays().add(promocaoOverlay);
+			}
+
+		}
+
+		this.mapView.postInvalidate();
 
 	}
 
