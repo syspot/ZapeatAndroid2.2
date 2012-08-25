@@ -41,6 +41,7 @@ public class AuthActivity extends DefaultActivity implements OnClickListener {
 	public void onClick(View v) {
 
 		if (v.getId() == R.id.btAutenticar && validateFields()) {
+			showDialog(PROGRESS_DIALOG); 
 			autenticar();
 		}
 

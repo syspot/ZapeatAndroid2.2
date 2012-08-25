@@ -27,10 +27,10 @@ import com.zapeat.util.Utilitario;
 @SuppressLint("ShowToast")
 public class MapViewActivity extends MapActivity {
 
-	private  final int ZOOM = 11;
-	private final String ASK_DISTANCIA_MAXIMA = "Qual distância máxima?";
-	private final String SEM_LOCALIZACAO = "Não foi possível obter localização atual, verifique as configurações de localização";
-	private final String NENHUMA_PROMOÇÃO_ENCONTRADA = "Nenhuma promoção encontrada!";
+	private  final int ZOOM = 14;
+	
+	
+	
 	private MapView mapView;
 	private AlertDialog dialog;
 	private String distanciaFiltro;
@@ -59,13 +59,13 @@ public class MapViewActivity extends MapActivity {
 
 		if (atual != null) {
 
-			GeoPoint geoPoint = new GeoPoint(Double.valueOf(atual.getLatitude() * 1E6).intValue(), Double.valueOf(atual.getLongitude() * 16).intValue());
+			GeoPoint geoPoint = new GeoPoint(Double.valueOf(atual.getLatitude() * 1E6).intValue(), Double.valueOf(atual.getLongitude() * 1E6).intValue());
 
 			mapView.getController().animateTo(geoPoint);
 
 		} else {
 
-			Toast.makeText(this, SEM_LOCALIZACAO, Toast.LENGTH_LONG);
+			Toast.makeText(this, Constantes.SEM_LOCALIZACAO, Toast.LENGTH_LONG);
 
 		}
 
@@ -74,7 +74,7 @@ public class MapViewActivity extends MapActivity {
 	private void initDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		builder.setTitle(ASK_DISTANCIA_MAXIMA);
+		builder.setTitle(Constantes.ASK_DISTANCIA_MAXIMA);
 
 		final CharSequence[] items = { SEM_DISTANCIA, KM_1, KM_3, KM_5 };
 
@@ -184,14 +184,14 @@ public class MapViewActivity extends MapActivity {
 		GeoPoint geoPoint = null;
 		Promocao promocao = null;
 		List<Promocao> promocoes = new PromocaoDAO().pesquisarTodas(getApplicationContext());
-		this.mapView.getOverlays().add(new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this));
+		this.mapView.getOverlays().add(new PromocaoOverlay(this.getResources().getDrawable(R.drawable.alert), this));
 		PromocaoOverlay overlay = null;
 
 		for (Promocao promo : promocoes) {
 
 			geoPoint = new GeoPoint(Double.valueOf(promo.getLatitude() * 1E6).intValue(), Double.valueOf(promo.getLongitude() * 1E6).intValue());
 			promocao = new Promocao(geoPoint, promo);
-			overlay = new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this);
+			overlay = new PromocaoOverlay(this.getResources().getDrawable(R.drawable.alert), this);
 			overlay.addOverlay(promocao);
 			this.mapView.getOverlays().add(overlay);
 
@@ -213,7 +213,7 @@ public class MapViewActivity extends MapActivity {
 
 			} else {
 
-				Toast t = Toast.makeText(this, SEM_LOCALIZACAO, Toast.LENGTH_LONG);
+				Toast t = Toast.makeText(this, Constantes.SEM_LOCALIZACAO, Toast.LENGTH_LONG);
 				t.setGravity(Gravity.CENTER, 0, 0);
 				t.show();
 
@@ -264,7 +264,7 @@ public class MapViewActivity extends MapActivity {
 
 		float[] distanciaCalculada = new float[4];
 
-		this.mapView.getOverlays().add(new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this));
+		this.mapView.getOverlays().add(new PromocaoOverlay(this.getResources().getDrawable(R.drawable.alert), this));
 
 		while (iterador.hasNext()) {
 
@@ -282,7 +282,7 @@ public class MapViewActivity extends MapActivity {
 		Promocao promocao = null;
 
 		if (promocoes.isEmpty()) {
-			Toast t = Toast.makeText(this, NENHUMA_PROMOÇÃO_ENCONTRADA, Toast.LENGTH_LONG);
+			Toast t = Toast.makeText(this, Constantes.NENHUMA_PROMOÇÃO_ENCONTRADA, Toast.LENGTH_LONG);
 			t.setGravity(Gravity.CENTER, 0, 0);
 			t.show();
 
@@ -291,7 +291,7 @@ public class MapViewActivity extends MapActivity {
 			for (Promocao promocaoMapa : promocoes) {
 				geoPoint = new GeoPoint(Double.valueOf(promocaoMapa.getLatitude() * 1E6).intValue(), Double.valueOf(promocaoMapa.getLongitude() * 1E6).intValue());
 				promocao = new Promocao(geoPoint, promocaoMapa);
-				promocaoOverlay = new PromocaoOverlay(this.getResources().getDrawable(R.drawable.talheres), this);
+				promocaoOverlay = new PromocaoOverlay(this.getResources().getDrawable(R.drawable.alert), this);
 				promocaoOverlay.addOverlay(promocao);
 				this.mapView.getOverlays().add(promocaoOverlay);
 			}

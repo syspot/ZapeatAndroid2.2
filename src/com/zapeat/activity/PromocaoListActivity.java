@@ -66,7 +66,7 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 	private void initDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-		builder.setTitle("Qual distância máxima?");
+		builder.setTitle(Constantes.ASK_DISTANCIA_MAXIMA);
 
 		final CharSequence[] items = { SEM_DISTANCIA, KM_1, KM_3, KM_5 };
 
@@ -214,6 +214,8 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 	@Override
 	public void onClick(View v) {
 
+		showDialog(PROGRESS_DIALOG);
+
 		super.initStrictMode();
 		List<Promocao> promocoesNovas = null;
 		List<Promocao> promocoesAtuais = null;
@@ -251,14 +253,17 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 				super.makeInfoMessage(this, "Ocorreu um erro ao atualizar as promoções, tente novamente mais tarde");
 			}
 
-			this.startActivity(new Intent(this, PromocaoListActivity.class));
-
-			this.finish();
 		}
+
+		this.startActivity(new Intent(this, PromocaoListActivity.class));
+
+		this.finish();
 
 	}
 
 	private void filtrar() {
+
+		showDialog(PROGRESS_DIALOG);
 
 		if (this.distanciaFiltro != null && !"".equals(distanciaFiltro)) {
 
@@ -293,12 +298,12 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 				this.listViewPromocoes.setAdapter(this.adapter);
 
 				if (promocoes.isEmpty()) {
-					super.makeInfoMessage(this, "Nenhuma promoção encontrada!");
+					super.makeInfoMessage(this, Constantes.NENHUMA_PROMOÇÃO_ENCONTRADA);
 				}
 
 			} else {
 
-				super.makeInfoMessage(this, "Não foi possível obter localização atual, verifique as configurações de localização");
+				super.makeInfoMessage(this, Constantes.SEM_LOCALIZACAO);
 
 				this.initPromocoes();
 

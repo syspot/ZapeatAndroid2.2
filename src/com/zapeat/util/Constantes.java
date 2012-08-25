@@ -9,6 +9,10 @@ public class Constantes {
 	private Constantes() {
 
 	}
+	
+	public static final String ASK_DISTANCIA_MAXIMA = "Qual distância máxima?";
+	public static final String SEM_LOCALIZACAO = "Não foi possível obter localização atual, verifique as configurações de localização";
+	public static final String NENHUMA_PROMOÇÃO_ENCONTRADA = "Nenhuma promoção ENCONTRADA!";
 
 	public interface Preferencias {
 
@@ -20,8 +24,8 @@ public class Constantes {
 
 	public interface GPS {
 		int DISTANCIA = 1;// ;000; // metros
-		int FREQUENCIA_TEMPO = 1000;// 1 minuto
-		float DISTANCIA_ALERT_PROMOCAO = 1000;
+		int FREQUENCIA_TEMPO = 500;// 1 minuto
+		float DISTANCIA_ALERT_PROMOCAO = 2000;
 	}
 
 	public interface Services {
