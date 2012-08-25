@@ -34,8 +34,8 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:divider="#ECECEC"
-        android:dividerHeight="3sp"
+        android:divider="#F4A460"
+        android:dividerHeight="2sp"
         android:footerDividersEnabled="true"
         android:headerDividersEnabled="true"/>
 

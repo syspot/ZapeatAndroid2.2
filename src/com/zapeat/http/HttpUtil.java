@@ -42,7 +42,7 @@ public class HttpUtil {
 
 			HttpParams httpParameters = new BasicHttpParams();
 
-			int timeoutConnection = 10000;
+			int timeoutConnection = 2000;
 			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
 			HttpClient httpclient = new DefaultHttpClient(httpParameters);
@@ -77,7 +77,7 @@ public class HttpUtil {
 
 			HttpParams httpParameters = new BasicHttpParams();
 
-			int timeoutConnection = 5000;
+			int timeoutConnection = 2000;
 			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
 
 			HttpClient httpclient = new DefaultHttpClient(httpParameters);

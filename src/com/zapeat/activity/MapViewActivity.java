@@ -54,14 +54,21 @@ public class MapViewActivity extends MapActivity {
 		mapView.getController().setZoom(ZOOM);
 
 		Intent intent = getIntent();
-		
+
 		Bundle bundle = intent.getExtras();
 
-		double lat = bundle.getDouble("lat");
-		double lon = bundle.getDouble("lon");
+		double lat = 0;
+		double lon = 0;
+
+		if (bundle != null) {
+
+			lat = bundle.getDouble("lat");
+			lon = bundle.getDouble("lon");
+
+		}
 
 		if (lat != 0 && lon != 0) {
-			
+
 			mapView.getController().setZoom(18);
 
 			GeoPoint geoPoint = new GeoPoint(Double.valueOf(lat * 1E6).intValue(), Double.valueOf(lon * 1E6).intValue());
