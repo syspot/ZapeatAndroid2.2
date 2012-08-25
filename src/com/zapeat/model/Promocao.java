@@ -1,11 +1,17 @@
 package com.zapeat.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
 
-public class Promocao extends OverlayItem {
+public class Promocao extends OverlayItem implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	public Promocao() {
 		super(null, null, null);

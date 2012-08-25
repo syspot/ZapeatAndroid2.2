@@ -57,6 +57,9 @@
         <activity
             android:name=".ListActivity"
             android:label="@string/title_activity_list" >
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".PromocaoListActivity"

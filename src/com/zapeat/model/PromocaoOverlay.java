@@ -59,7 +59,7 @@ public class PromocaoOverlay extends ItemizedOverlay<OverlayItem> {
 
 	private void showDialogPromocao(Promocao promocao) {
 		final Dialog dialog = new Dialog(this.context);
-		dialog.setContentView(R.layout.dialog_promocao);
+		dialog.setContentView(R.layout.dialog_promocao_ro);
 		dialog.setTitle("Detalhes da promoção");
 
 		TextView text = (TextView) dialog.findViewById(R.id.textDialogPromocao);

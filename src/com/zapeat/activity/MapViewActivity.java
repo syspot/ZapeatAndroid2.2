@@ -27,10 +27,8 @@ import com.zapeat.util.Utilitario;
 @SuppressLint("ShowToast")
 public class MapViewActivity extends MapActivity {
 
-	private  final int ZOOM = 14;
-	
-	
-	
+	private final int ZOOM = 16;
+
 	private MapView mapView;
 	private AlertDialog dialog;
 	private String distanciaFiltro;
@@ -55,17 +53,36 @@ public class MapViewActivity extends MapActivity {
 
 		mapView.getController().setZoom(ZOOM);
 
-		Location atual = PollService.getLastLocation();
+		Intent intent = getIntent();
+		
+		Bundle bundle = intent.getExtras();
 
-		if (atual != null) {
+		double lat = bundle.getDouble("lat");
+		double lon = bundle.getDouble("lon");
 
-			GeoPoint geoPoint = new GeoPoint(Double.valueOf(atual.getLatitude() * 1E6).intValue(), Double.valueOf(atual.getLongitude() * 1E6).intValue());
+		if (lat != 0 && lon != 0) {
+			
+			mapView.getController().setZoom(18);
+
+			GeoPoint geoPoint = new GeoPoint(Double.valueOf(lat * 1E6).intValue(), Double.valueOf(lon * 1E6).intValue());
 
 			mapView.getController().animateTo(geoPoint);
 
 		} else {
 
-			Toast.makeText(this, Constantes.SEM_LOCALIZACAO, Toast.LENGTH_LONG);
+			Location atual = PollService.getLastLocation();
+
+			if (atual != null) {
+
+				GeoPoint geoPoint = new GeoPoint(Double.valueOf(atual.getLatitude() * 1E6).intValue(), Double.valueOf(atual.getLongitude() * 1E6).intValue());
+
+				mapView.getController().animateTo(geoPoint);
+
+			} else {
+
+				Toast.makeText(this, Constantes.SEM_LOCALIZACAO, Toast.LENGTH_LONG);
+
+			}
 
 		}
 

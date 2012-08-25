@@ -26,13 +26,6 @@
         android:orientation="vertical" >
 
         <Button
-            android:id="@+id/btVerNoMapas"
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:text="Onde fica?"
-            android:textSize="12dp" />
-
-        <Button
             android:id="@+id/btFecharDialogPromocao"
             android:layout_width="fill_parent"
             android:layout_height="50dp"

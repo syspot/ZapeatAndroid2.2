@@ -43,6 +43,7 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 	private final String KM_3 = "3 Km";
 	private final String KM_5 = "5 Km";
 	private final String SEM_DISTANCIA = "Ilimitada";
+	private Promocao promocaoSelecionada;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -164,9 +165,9 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
 
-				Promocao promocao = (Promocao) listViewPromocoes.getItemAtPosition(position);
+				promocaoSelecionada = (Promocao) listViewPromocoes.getItemAtPosition(position);
 
-				showDialogPromocao(promocao);
+				showDialogPromocao();
 
 			}
 		};
@@ -175,19 +176,21 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 	}
 
-	private void showDialogPromocao(Promocao promocao) {
+	private void showDialogPromocao() {
 		final Dialog dialog = new Dialog(PromocaoListActivity.this);
 		dialog.setContentView(R.layout.dialog_promocao);
 		dialog.setTitle("Detalhes da promoção");
 
 		TextView text = (TextView) dialog.findViewById(R.id.textDialogPromocao);
-		text.setText(promocao.getLocalidade() + "\n\n" + promocao.getDescricao() + "\n de " + promocao.getPrecoOriginal() + " por " + promocao.getPrecoPromocional() + "\n\n Esta promoção encerra em " + promocao.getDataFinal() + " às " + promocao.getHoraFinal() + "\n\n");
+		text.setText(promocaoSelecionada.getLocalidade() + "\n\n" + promocaoSelecionada.getDescricao() + "\n de " + promocaoSelecionada.getPrecoOriginal() + " por " + promocaoSelecionada.getPrecoPromocional() + "\n\n Esta promoção encerra em " + promocaoSelecionada.getDataFinal() + " às " + promocaoSelecionada.getHoraFinal() + "\n\n");
 
 		Button dialogButton = (Button) dialog.findViewById(R.id.btFecharDialogPromocao);
 
+		Button btDialogVerMapa = (Button) dialog.findViewById(R.id.btVerNoMapas);
+
 		ImageView image = (ImageView) dialog.findViewById(R.id.imageDialogPromocao);
 
-		Bitmap bmp = Utilitario.getImage(promocao.getId());
+		Bitmap bmp = Utilitario.getImage(promocaoSelecionada.getId());
 
 		if (bmp == null) {
 
@@ -205,6 +208,21 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 			@Override
 			public void onClick(View v) {
 				dialog.dismiss();
+			}
+		});
+
+		btDialogVerMapa.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				Intent intent = new Intent(PromocaoListActivity.this, MapViewActivity.class);
+
+				intent.putExtra("lat", promocaoSelecionada.getLatitude());
+				intent.putExtra("lon", promocaoSelecionada.getLongitude());
+
+				startActivity(intent);
+
 			}
 		});
 
@@ -261,7 +279,6 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 	private void filtrar() {
 
-		
 		if (this.distanciaFiltro != null && !"".equals(distanciaFiltro)) {
 
 			List<Promocao> promocoes = new PromocaoDAO().pesquisarTodas(getApplicationContext());
