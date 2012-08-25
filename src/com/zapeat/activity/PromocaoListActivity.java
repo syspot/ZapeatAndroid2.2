@@ -214,8 +214,6 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 	@Override
 	public void onClick(View v) {
 
-		showDialog(PROGRESS_DIALOG);
-
 		super.initStrictMode();
 		List<Promocao> promocoesNovas = null;
 		List<Promocao> promocoesAtuais = null;
@@ -263,8 +261,7 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 	private void filtrar() {
 
-		showDialog(PROGRESS_DIALOG);
-
+		
 		if (this.distanciaFiltro != null && !"".equals(distanciaFiltro)) {
 
 			List<Promocao> promocoes = new PromocaoDAO().pesquisarTodas(getApplicationContext());
