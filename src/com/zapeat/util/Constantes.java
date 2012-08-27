@@ -19,6 +19,7 @@ public class Constantes {
 		String PREFERENCE_DEFAULT = "preferenceDefault";
 		String USUARIO_LOGADO = "usuarioLogado";
 		String ULTIMA_ATUALIZACAO = "ultimaAtualizacao";
+		String PROMOCAO_NOTIFICADA = "promocaoNotificada";
 
 	}
 
@@ -58,8 +59,8 @@ public class Constantes {
 			String FALHA_AUTENTICACAO = "A autenticação falhou por motivos técnicos. Tente novamente mais tarde";
 		}
 
-		String URL_AUTH = "http://10.1.6.250:8080/TestAndroid/autenticar";
-		String URL_PROMOCOES = "http://10.1.6.250:8080/TestAndroid/promocoes";
+		String URL_AUTH = "http://192.168.0.17:8080/TestAndroid/autenticar";
+		String URL_PROMOCOES = "http://192.168.0.17:8080/TestAndroid/promocoes";
 		String URL_ZAPEAT = "http://www.google.com.br";
 		String PARAMETRO_RETORNO = "PARAM_RETORNO";
 		String PARAMETRO_LOGIN = "login";

@@ -40,6 +40,10 @@ public class ListPromocaoAdapter extends BaseAdapter {
 		return position;
 	}
 
+	public List<Promocao> getPromocoes() {
+		return promocoes;
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 

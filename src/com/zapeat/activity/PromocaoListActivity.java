@@ -9,6 +9,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
@@ -59,9 +60,42 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 		this.initPromocoes();
 		this.initListeners();
 		this.initDialog();
+		this.handlePromocaoNotificada();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 		this.ultimaAtualizacao = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).getString(Constantes.Preferencias.ULTIMA_ATUALIZACAO, dateFormat.format(new Date()));
 		this.btAtualizar.setText("Atualizado às \n" + this.ultimaAtualizacao);
+	}
+
+	private void handlePromocaoNotificada() {
+
+		SharedPreferences shared = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0);
+
+		Long promocao = shared.getLong(Constantes.Preferencias.PROMOCAO_NOTIFICADA, 0);
+
+		if (Long.valueOf(0).compareTo(promocao) != 0) {
+
+			Promocao promocaoNotificada = new Promocao();
+
+			promocaoNotificada.setId(promocao);
+
+			int index = this.adapter.getPromocoes().indexOf(promocaoNotificada);
+
+			if (index >= 0) {
+
+				this.promocaoSelecionada = this.adapter.getPromocoes().get(index);
+
+				this.showDialogPromocao();
+
+			}
+
+			SharedPreferences.Editor editor = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).edit();
+
+			editor.remove(Constantes.Preferencias.PROMOCAO_NOTIFICADA);
+
+			editor.commit();
+
+		}
+
 	}
 
 	private void initDialog() {

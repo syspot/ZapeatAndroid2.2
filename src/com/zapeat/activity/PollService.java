@@ -220,6 +220,14 @@ public class PollService extends Service {
 			notification.setLatestEventInfo(getApplicationContext(), "Zapeat", makePromocaoMessage(promocao), activity);
 			notificationManager.notify(promocao.getId().intValue(), notification);
 
+			SharedPreferences.Editor editor = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).edit();
+
+			editor.remove(Constantes.Preferencias.PROMOCAO_NOTIFICADA);
+
+			editor.putLong(Constantes.Preferencias.PROMOCAO_NOTIFICADA, promocao.getId());
+
+			editor.commit();
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
