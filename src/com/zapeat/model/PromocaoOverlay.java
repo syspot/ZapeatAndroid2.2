@@ -63,7 +63,7 @@ public class PromocaoOverlay extends ItemizedOverlay<OverlayItem> {
 		dialog.setTitle("Detalhes da promoção");
 
 		TextView text = (TextView) dialog.findViewById(R.id.textDialogPromocao);
-		text.setText(promocao.getLocalidade() + "\n\n" + promocao.getDescricao() + "\n de " + promocao.getPrecoOriginal() + " por " + promocao.getPrecoPromocional() + "\n\n Esta promoção encerra em " + promocao.getDataFinal() + " às " + promocao.getHoraFinal() + "\n\n");
+		text.setText(promocao.getLocalidade() + "\n\n" + promocao.getDescricao() + "\n de " + promocao.getPrecoOriginal() + " por " + promocao.getPrecoPromocional() + "\n\n Esta promoção encerra em " + promocao.getDataFinal()  + "\n\n");
 
 		Button dialogButton = (Button) dialog.findViewById(R.id.btFecharDialogPromocao);
 

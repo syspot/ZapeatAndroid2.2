@@ -17,7 +17,7 @@ public class Promocao extends OverlayItem implements Serializable {
 		super(null, null, null);
 	}
 
-	public Promocao(GeoPoint point,Promocao promocao) {
+	public Promocao(GeoPoint point, Promocao promocao) {
 		super(point, promocao.getLocalidade(), promocao.getDescricao());
 		this.id = promocao.getId();
 		this.localidade = promocao.getLocalidade();
@@ -26,7 +26,6 @@ public class Promocao extends OverlayItem implements Serializable {
 		this.descricao = promocao.getDescricao();
 		this.dataAnuncio = promocao.getDataAnuncio();
 		this.dataFinal = promocao.getDataFinal();
-		this.horaFinal = promocao.getHoraFinal();
 		this.precoOriginal = promocao.getPrecoOriginal();
 		this.precoPromocional = promocao.getPrecoPromocional();
 		this.idFornecedor = promocao.getIdFornecedor();
@@ -38,8 +37,8 @@ public class Promocao extends OverlayItem implements Serializable {
 	private double longitude;
 	private String descricao;
 	private Date dataAnuncio;
+	private String dataInicial;
 	private String dataFinal;
-	private String horaFinal;
 	private String precoOriginal;
 	private String precoPromocional;
 	private Long idFornecedor;
@@ -92,12 +91,12 @@ public class Promocao extends OverlayItem implements Serializable {
 		this.id = id;
 	}
 
-	public String getHoraFinal() {
-		return horaFinal;
+	public String getDataInicial() {
+		return dataInicial;
 	}
 
-	public void setHoraFinal(String horaFinal) {
-		this.horaFinal = horaFinal;
+	public void setDataInicial(String dataInicial) {
+		this.dataInicial = dataInicial;
 	}
 
 	public String getDataFinal() {

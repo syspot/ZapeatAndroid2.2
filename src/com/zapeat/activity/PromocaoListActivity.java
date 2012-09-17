@@ -216,7 +216,7 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 		dialog.setTitle("Detalhes da promoção");
 
 		TextView text = (TextView) dialog.findViewById(R.id.textDialogPromocao);
-		text.setText(promocaoSelecionada.getLocalidade() + "\n\n" + promocaoSelecionada.getDescricao() + "\n de " + promocaoSelecionada.getPrecoOriginal() + " por " + promocaoSelecionada.getPrecoPromocional() + "\n\n Esta promoção encerra em " + promocaoSelecionada.getDataFinal() + " às " + promocaoSelecionada.getHoraFinal() + "\n\n");
+		text.setText(promocaoSelecionada.getLocalidade() + "\n\n" + promocaoSelecionada.getDescricao() + "\n de " + promocaoSelecionada.getPrecoOriginal() + " por " + promocaoSelecionada.getPrecoPromocional() + "\n\n Esta promoção encerra em " + promocaoSelecionada.getDataFinal() + "\n\n");
 
 		Button dialogButton = (Button) dialog.findViewById(R.id.btFecharDialogPromocao);
 

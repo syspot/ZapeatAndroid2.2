@@ -33,6 +33,10 @@ import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
 
 public class HttpUtil {
+	
+	private HttpUtil() {
+	
+	}
 
 	public static Usuario autenticar(Usuario usuario) throws ApplicationException {
 
@@ -49,7 +53,7 @@ public class HttpUtil {
 
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 
-			nameValuePairs.add(new BasicNameValuePair(Constantes.Http.PARAMETRO_LOGIN, usuario.getLogin()));
+			nameValuePairs.add(new BasicNameValuePair(Constantes.Http.PARAMETRO_EMAIL, usuario.getLogin()));
 			nameValuePairs.add(new BasicNameValuePair(Constantes.Http.PARAMETRO_SENHA, usuario.getSenha()));
 
 			HttpPost httppost = new HttpPost(Constantes.Http.URL_AUTH);
@@ -228,15 +232,13 @@ public class HttpUtil {
 
 			promocao.setDescricao(jsonPromo.getString(Constantes.JsonProperties.DESCRICAO));
 
-			promocao.setHoraFinal(jsonPromo.getString(Constantes.JsonProperties.HORA_FINAL));
+			promocao.setDataInicial(jsonPromo.getString(Constantes.JsonProperties.DATA_INICIAL));
 
 			promocao.setDataFinal(jsonPromo.getString(Constantes.JsonProperties.DATA_FINAL));
 
 			promocao.setPrecoOriginal(jsonPromo.getString(Constantes.JsonProperties.PRECO_ORIGINAL));
 
 			promocao.setPrecoPromocional(jsonPromo.getString(Constantes.JsonProperties.PRECO_PROMOCIONAL));
-
-			promocao.setIdFornecedor(jsonPromo.getLong(Constantes.JsonProperties.ID_FORNECEDOR));
 
 			promocoes.add(promocao);
 

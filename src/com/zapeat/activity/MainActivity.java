@@ -24,7 +24,7 @@ public class MainActivity extends DefaultActivity {
 
 		} else {
 
-			intentMain = new Intent(this, PromocaoListActivity.class);
+			intentMain = new Intent(this, BrowserActivity.class);
 
 		}
 

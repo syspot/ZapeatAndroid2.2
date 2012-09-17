@@ -23,7 +23,7 @@
         android:layout_marginBottom="32dp"
         android:ems="10"
         android:layout_below="@+id/logo"
-        android:hint="@string/login" />
+        android:hint="@string/email" />
 
     <EditText
         android:id="@+id/senha"

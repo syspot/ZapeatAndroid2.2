@@ -41,7 +41,7 @@ public class Constantes {
 		String LATITUDE = "latitude";
 		String LONGITUDE = "longitude";
 		String LOCALIDADE = "localidade";
-		String HORA_FINAL = "horaFinal";
+		String DATA_INICIAL = "dataInicial";
 		String DATA_FINAL = "dataFinal";
 		String PRECO_ORIGINAL = "precoOriginal";
 		String PRECO_PROMOCIONAL = "precoPromocional";
@@ -59,11 +59,12 @@ public class Constantes {
 			String FALHA_AUTENTICACAO = "A autenticação falhou por motivos técnicos. Tente novamente mais tarde";
 		}
 
-		String URL_AUTH = "http://192.168.0.17:8080/TestAndroid/autenticar";
-		String URL_PROMOCOES = "http://192.168.0.17:8080/TestAndroid/promocoes";
-		String URL_ZAPEAT = "http://www.google.com.br";
+		String URL_AUTH = "http://192.168.0.17:8080/ZapeatMobile/autenticar";
+		String URL_PROMOCOES = "http://192.168.0.17:8080/ZapeatMobile/promocoes";
+		String URL_ZAPEAT = "http://192.168.0.17:8080/ZapeatMobile/menu.xhtml";
+		String URL_ZAPEAT_PROMOCAO = "http://192.168.0.17:8080/ZapeatMobile/detalhamento.xhtml";
 		String PARAMETRO_RETORNO = "PARAM_RETORNO";
-		String PARAMETRO_LOGIN = "login";
+		String PARAMETRO_EMAIL = "email";
 		String PARAMETRO_SENHA = "senha";
 		String URL_DOWNLOAD_IMAGE_FORNECEDOR = "http://www.iconlet.com/icons/nuvola/16x16/camera_test.png";
 		// String URL_DOWNLOAD_IMAGE_FORNECEDOR =

@@ -2,7 +2,6 @@ package com.zapeat.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 
 import com.zapeat.dao.PromocaoDAO;
 import com.zapeat.http.HttpUtil;
-import com.zapeat.model.Promocao;
 import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
 import com.zapeat.util.Utilitario;
@@ -54,7 +52,7 @@ public class AuthActivity extends DefaultActivity implements OnClickListener {
 
 			Usuario usuario = new Usuario();
 			usuario.setLogin(this.login.getText().toString());
-			usuario.setSenha(this.senha.getText().toString());
+			usuario.setSenha(Utilitario.gerarHash(this.senha.getText().toString()));
 
 			usuario = HttpUtil.autenticar(usuario);
 
@@ -93,18 +91,7 @@ public class AuthActivity extends DefaultActivity implements OnClickListener {
 
 		promocaoDAO.inserir(usuario.getPromocoes(), getApplicationContext());
 
-		Bitmap imagem = null;
-
-		for (Promocao promocao : usuario.getPromocoes()) {
-
-			if (!Utilitario.existsImage(promocao.getId())) {
-				imagem = HttpUtil.downloadBitmap(promocao.getId());
-				Utilitario.storeImage(imagem, promocao.getId());
-			}
-
-		}
-
-		this.startActivity(new Intent(this, PromocaoListActivity.class));
+		this.startActivity(new Intent(this, BrowserActivity.class));
 
 		this.finish();
 	}
