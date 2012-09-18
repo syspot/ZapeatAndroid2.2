@@ -81,7 +81,7 @@ public class AuthActivity extends DefaultActivity implements OnClickListener {
 
 		SharedPreferences.Editor editor = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).edit();
 
-		editor.putInt(Constantes.Preferencias.USUARIO_LOGADO, usuario.getId());
+		editor.putString(Constantes.Preferencias.USUARIO_LOGADO, usuario.getToken());
 
 		editor.commit();
 

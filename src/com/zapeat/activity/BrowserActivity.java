@@ -20,14 +20,28 @@ public class BrowserActivity extends DefaultActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.browser);
 		WebView ecra = (WebView) findViewById(R.id.wvBrowser);
-		ecra.setWebViewClient(new WebViewClient());
+		ecra.setWebViewClient(new WebViewClient() { 
+            public boolean shouldOverrideUrlLoading(WebView view, String url){
+            	view.loadUrl(url); 
+            	
+            	if(url!=null && url.endsWith("sair.xhtml")) {
+            		sair();
+            		Intent intentSair = new Intent(BrowserActivity.this, AuthActivity.class);
+        			startActivity(intentSair);
+        			finish();
+            	}
+            	
+                return false; 
+            } 
+        });
 
-		String url = Constantes.Http.URL_ZAPEAT;
+
+		String url = Constantes.Http.URL_ZAPEAT + "?usuarioId=" + super.getUsuarioLogado().getToken();
 
 		Long promocao = this.getPromocaoNotificada();
 
 		if (promocao != null && Long.valueOf(0).compareTo(promocao) != 0) {
-			url = Constantes.Http.URL_ZAPEAT_PROMOCAO + "?promocaoId=" + promocao;
+			url = Constantes.Http.URL_ZAPEAT_PROMOCAO + "?promocaoId=" + promocao + "&usuarioId=" + super.getUsuarioLogado().getToken();
 		}
 
 		ecra.loadUrl(url);

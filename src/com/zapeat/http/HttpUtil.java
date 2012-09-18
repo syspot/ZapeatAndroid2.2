@@ -88,7 +88,7 @@ public class HttpUtil {
 
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 
-			nameValuePairs.add(new BasicNameValuePair("usuarioId", usuario.getId().toString()));
+			nameValuePairs.add(new BasicNameValuePair("token", usuario.getToken()));
 
 			HttpPost httppost = new HttpPost(Constantes.Http.URL_PROMOCOES);
 
@@ -177,6 +177,8 @@ public class HttpUtil {
 				usuario.setId(jsonObject.getInt("id"));
 
 				usuario.setNome(jsonObject.getString("nome"));
+				
+				usuario.setToken(jsonObject.getString("token"));
 
 				usuario.setPromocoes(readJsonPromocao(jsonObject));
 

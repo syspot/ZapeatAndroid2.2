@@ -62,13 +62,13 @@ public class PollService extends Service {
 
 		Usuario usuario = new Usuario();
 
-		Integer id = prefs.getInt(Constantes.Preferencias.USUARIO_LOGADO, 0);
+		String token = prefs.getString(Constantes.Preferencias.USUARIO_LOGADO, null);
 
-		if (id == 0) {
+		if (token == null) {
 			return null;
 		}
 
-		usuario.setId(id);
+		usuario.setToken(token);
 
 		return usuario;
 

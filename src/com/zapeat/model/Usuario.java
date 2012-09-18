@@ -8,6 +8,7 @@ public class Usuario {
 	private String login;
 	private String senha;
 	private String nome;
+	private String token;
 	private List<Promocao> promocoes;
 
 	public String getLogin() {
@@ -48,6 +49,14 @@ public class Usuario {
 
 	public void setPromocoes(List<Promocao> promocoes) {
 		this.promocoes = promocoes;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }

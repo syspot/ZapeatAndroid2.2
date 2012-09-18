@@ -14,11 +14,11 @@ public class MainActivity extends DefaultActivity {
 
 		SharedPreferences shared = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0);
 
-		Integer usuario = shared.getInt(Constantes.Preferencias.USUARIO_LOGADO, 0);
+		String token = shared.getString(Constantes.Preferencias.USUARIO_LOGADO, null);
 
 		Intent intentMain = null;
 
-		if (usuario.intValue() == 0) {
+		if (token == null) {
 
 			intentMain = new Intent(this, AuthActivity.class);
 
