@@ -24,14 +24,14 @@ public class Constantes {
 	}
 
 	public interface GPS {
-		int DISTANCIA = 1;// ;000; // metros
-		int FREQUENCIA_TEMPO = 500;// 1 minuto
+		int DISTANCIA = 1000; // 1 km
+		int FREQUENCIA_TEMPO = 3 * 60 * 1000;// 3 min
 		float DISTANCIA_ALERT_PROMOCAO = 2000;
 	}
 
 	public interface Services {
 		String MONITORING = "monitoring";
-		int PERIODICIDADE = 1000 * 60; // * 60 * 3;
+		int PERIODICIDADE = 1000 * 60 * 60 * 3;
 	}
 
 	public interface JsonProperties {
@@ -59,10 +59,10 @@ public class Constantes {
 			String FALHA_AUTENTICACAO = "A autenticação falhou por motivos técnicos. Tente novamente mais tarde";
 		}
 
-		String URL_AUTH = "http://192.168.0.17:8080/ZapeatMobile/autenticar";
-		String URL_PROMOCOES = "http://192.168.0.17:8080/ZapeatMobile/promocoes";
-		String URL_ZAPEAT = "http://192.168.0.17:8080/ZapeatMobile/menu.xhtml";
-		String URL_ZAPEAT_PROMOCAO = "http://192.168.0.17:8080/ZapeatMobile/detalhamento.xhtml";
+		String URL_AUTH = "http://www.saudelivre.com.br/ZapeatMobile/autenticar";
+		String URL_PROMOCOES = "http://www.saudelivre.com.br/ZapeatMobile/promocoes";
+		String URL_ZAPEAT = "http://www.saudelivre.com.br/ZapeatMobile/menu.xhtml";
+		String URL_ZAPEAT_PROMOCAO = "http://www.saudelivre.com.br/ZapeatMobile/detalhamento.xhtml";
 		String PARAMETRO_RETORNO = "PARAM_RETORNO";
 		String PARAMETRO_EMAIL = "email";
 		String PARAMETRO_SENHA = "senha";

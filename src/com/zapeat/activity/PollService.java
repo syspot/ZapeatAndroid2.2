@@ -174,13 +174,11 @@ public class PollService extends Service {
 		}
 
 		public void onProviderDisabled(String s) {
-			Toast.makeText(getApplicationContext(), "Zapeat foi interrompido pois o provedor de localização foi desabilitado.", Toast.LENGTH_LONG).show();
-
 			stopSelf();
 		}
 
 		public void onProviderEnabled(String s) {
-
+			startService(new Intent());
 		}
 
 	}
