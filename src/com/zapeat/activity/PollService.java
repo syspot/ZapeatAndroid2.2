@@ -162,7 +162,7 @@ public class PollService extends Service {
 
 					}
 
-				} catch (IllegalArgumentException ex) {
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 
@@ -174,11 +174,9 @@ public class PollService extends Service {
 		}
 
 		public void onProviderDisabled(String s) {
-			stopSelf();
 		}
 
 		public void onProviderEnabled(String s) {
-			startService(new Intent());
 		}
 
 	}

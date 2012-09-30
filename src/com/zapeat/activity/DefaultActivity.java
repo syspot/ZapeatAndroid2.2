@@ -24,7 +24,6 @@ import com.zapeat.util.Utilitario;
 public abstract class DefaultActivity extends Activity {
 
 	protected static final int PROGRESS_DIALOG = 0;
-	private ProgressThread progressThread;
 	ProgressDialog progressDialog;
 
 	protected String ultimaAtualizacao;
@@ -40,9 +39,9 @@ public abstract class DefaultActivity extends Activity {
 
 		Usuario usuario = new Usuario();
 
-		String  token = prefs.getString(Constantes.Preferencias.USUARIO_LOGADO, null);
+		String token = prefs.getString(Constantes.Preferencias.USUARIO_LOGADO, null);
 
-		if (token==null) {
+		if (token == null) {
 			return null;
 		}
 
@@ -120,78 +119,5 @@ public abstract class DefaultActivity extends Activity {
 		}
 
 	}
-	
 
-	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case PROGRESS_DIALOG:
-			progressDialog = new ProgressDialog(this);
-			progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-			progressDialog.setIndeterminate(true);
-			progressDialog.setMessage("Carregando...");
-			return progressDialog;
-		default:
-			return null;
-		}
-	}
-
-	@Override
-	protected void onPrepareDialog(int id, Dialog dialog) {
-
-		final Handler handler = new Handler() {
-			public void handleMessage(Message msg) {
-				int total = msg.arg1;
-				progressDialog.setProgress(total);
-				if (total >= 100) {
-					try {
-						dismissDialog(PROGRESS_DIALOG);
-						progressThread.setState(ProgressThread.STATE_DONE);
-					} catch (Exception ex) {
-					}
-				}
-			}
-		};
-
-		switch (id) {
-		case PROGRESS_DIALOG:
-			progressDialog.setProgress(0);
-			progressThread = new ProgressThread(handler);
-			progressThread.start();
-		}
-	}
-
-	private class ProgressThread extends Thread {
-		Handler mHandler;
-		final static int STATE_DONE = 0;
-		final static int STATE_RUNNING = 1;
-		int mState;
-		int total;
-
-		ProgressThread(Handler h) {
-			mHandler = h;
-		}
-
-		public void run() {
-			mState = STATE_RUNNING;
-			total = 0;
-			while (mState == STATE_RUNNING) {
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					Log.e("ERROR", "Thread Interrupted");
-				}
-				Message msg = mHandler.obtainMessage();
-				msg.arg1 = total;
-				mHandler.sendMessage(msg);
-				total++;
-			}
-		}
-
-		/*
-		 * sets the current state for the thread, used to stop the thread
-		 */
-		public void setState(int state) {
-			mState = state;
-		}
-	}
 }
