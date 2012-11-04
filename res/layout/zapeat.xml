@@ -7,14 +7,13 @@
     android:background="#FFC116"
     android:gravity="fill_vertical" >
 
-    <requestFocus />
-
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="23dp"
+        android:layout_marginTop="23dp"
         android:src="@drawable/ic_launcher" />
 
     <Button
@@ -37,7 +36,7 @@
         android:ems="10"
         android:hint="@string/senha"
         android:inputType="textPassword" />
-
+    
     <EditText
         android:id="@+id/login"
         android:layout_width="wrap_content"
@@ -45,6 +44,10 @@
         android:layout_below="@+id/imageView1"
         android:layout_centerHorizontal="true"
         android:ems="10"
-        android:hint="@string/email" />
+        android:hint="@string/email"
+        android:scrollHorizontally="true"
+        android:singleLine="true">
+        	<requestFocus/>
+        </EditText>
 
 </RelativeLayout>

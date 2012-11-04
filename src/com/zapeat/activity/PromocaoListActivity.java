@@ -276,7 +276,7 @@ public class PromocaoListActivity extends DefaultActivity implements OnClickList
 
 			try {
 
-				promocoesNovas = HttpUtil.pesquisarPromocoes(getUsuarioLogado());
+				promocoesNovas = HttpUtil.pesquisarPromocoes();
 
 				promocoesAtuais = dao.pesquisarTodas(getApplicationContext());
 

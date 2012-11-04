@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:icon="@drawable/ic_launcher"
@@ -32,16 +33,9 @@
             android:label="@string/title_activity_monitoring" >
         </activity>
         <activity
-            android:name=".AuthActivity"
-            android:label="@string/title_activity_zapeat" >
-        </activity>
-        <activity
-            android:name=".ConfiguracaoActivity"
-            android:label="@string/title_activity_configuracao" >
-        </activity>
-        <activity
             android:name=".BrowserActivity"
-            android:label="@string/title_activity_browser" >
+            android:label="@string/title_activity_browser"
+            android:screenOrientation="portrait" >
         </activity>
 
         <service
@@ -49,25 +43,20 @@
             android:exported="false" >
             <intent-filter>
                 <action android:name="MONITORING" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
 
-        <activity
-            android:name=".ListActivity"
-            android:label="@string/title_activity_list" >
+        <receiver android:name=".StartServiceReceiver" >
             <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" >
+                </action>
+
+                <category android:name="android.intent.category.HOME" >
+                </category>
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".PromocaoListActivity"
-            android:label="@string/title_activity_promocao_list" >
-        </activity>
-        <activity
-            android:name=".MapViewActivity"
-            android:label="@string/title_activity_map_view" />
+
+        </receiver>
 
         <uses-library android:name="com.google.android.maps" />
     </application>

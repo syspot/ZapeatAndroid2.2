@@ -33,9 +33,9 @@ import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
 
 public class HttpUtil {
-	
+
 	private HttpUtil() {
-	
+
 	}
 
 	public static Usuario autenticar(Usuario usuario) throws ApplicationException {
@@ -75,7 +75,7 @@ public class HttpUtil {
 
 	}
 
-	public static List<Promocao> pesquisarPromocoes(Usuario usuario) throws ApplicationException {
+	public static List<Promocao> pesquisarPromocoes() throws ApplicationException {
 
 		try {
 
@@ -87,8 +87,6 @@ public class HttpUtil {
 			HttpClient httpclient = new DefaultHttpClient(httpParameters);
 
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-
-			nameValuePairs.add(new BasicNameValuePair("token", usuario.getToken()));
 
 			HttpPost httppost = new HttpPost(Constantes.Http.URL_PROMOCOES);
 
@@ -177,7 +175,7 @@ public class HttpUtil {
 				usuario.setId(jsonObject.getInt("id"));
 
 				usuario.setNome(jsonObject.getString("nome"));
-				
+
 				usuario.setToken(jsonObject.getString("token"));
 
 				usuario.setPromocoes(readJsonPromocao(jsonObject));

@@ -5,21 +5,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.Toast;
 
 import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
-import com.zapeat.util.Utilitario;
 
 public abstract class DefaultActivity extends Activity {
 
@@ -81,8 +76,6 @@ public abstract class DefaultActivity extends Activity {
 		editor.commit();
 
 		stopMonitoring();
-
-		Utilitario.cleanDirectory();
 
 	}
 
