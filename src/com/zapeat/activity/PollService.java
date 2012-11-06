@@ -130,6 +130,8 @@ public class PollService extends Service {
 					if (result.length >= 0 && result[0] <= Constantes.GPS.DISTANCIA_ALERT_PROMOCAO) {
 
 						promocaoDAO.marcarEnviada(promocao, getApplicationContext());
+						
+						notificaveis.add(promocao);
 
 					}
 
@@ -141,9 +143,13 @@ public class PollService extends Service {
 
 			if (!notificaveis.isEmpty()) {
 
-				if (notificaveis.size() == 1) {
-
+				if (notificaveis.size() <= 3) {
+					
 					notificate(notificaveis.get(0));
+					
+					notificate(notificaveis.get(1));
+					
+					notificate(notificaveis.get(2));
 
 				} else {
 
@@ -176,7 +182,7 @@ public class PollService extends Service {
 
 	private String makePromocaoMessage(List<Promocao> promocoes) {
 
-		StringBuilder message = new StringBuilder("Existem ").append(promocoes.size()).append(" próximas a você!");
+		StringBuilder message = new StringBuilder("Existem ").append(promocoes.size()).append(" promoções próximas a você!");
 
 		return message.toString();
 

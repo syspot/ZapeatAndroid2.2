@@ -32,14 +32,14 @@ public class BrowserActivity extends DefaultActivity {
 			
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			
-				view.loadUrl(url);
-				
-				if (url != null && url.endsWith("sair.xhtml")) {
-					sair();
-					Intent intentSair = new Intent(BrowserActivity.this, AuthActivity.class);
-					startActivity(intentSair);
-					finish();
-				}
+//				view.loadUrl(url);
+//				
+//				if (url != null && url.endsWith("sair.xhtml")) {
+//					sair();
+//					Intent intentSair = new Intent(BrowserActivity.this, AuthActivity.class);
+//					startActivity(intentSair);
+//					finish();
+//				}
 
 				return false;
 			}
@@ -75,33 +75,7 @@ public class BrowserActivity extends DefaultActivity {
 		});
 
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_browser, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.sair:
-
-			super.sair();
-
-			Intent intentSair = new Intent(this, AuthActivity.class);
-
-			startActivity(intentSair);
-
-			finish();
-
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
-
+	
 	private Long getPromocaoNotificada() {
 
 		SharedPreferences shared = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0);

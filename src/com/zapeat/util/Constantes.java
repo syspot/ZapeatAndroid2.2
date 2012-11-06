@@ -60,16 +60,16 @@ public class Constantes {
 			String FALHA_AUTENTICACAO = "A autenticação falhou por motivos técnicos. Tente novamente mais tarde";
 		}
 
-		String URL_AUTH = "http://192.168.0.17:8080/ZapeatMobile/autenticar";
-		String URL_PROMOCOES = "http://192.168.0.17:8080/ZapeatMobile/promocoes";
-		String URL_ZAPEAT = "http://192.168.0.17:8080/ZapeatMobile/menu.xhtml";
-		String URL_ZAPEAT_PROMOCAO = "http://192.168.0.17:8080/ZapeatMobile/detalhamento.xhtml";
+		String URL_AUTH = "http://www.saudelivre.com.br/ZapeatMobile/autenticar";
+		String URL_PROMOCOES = "http://www.saudelivre.com.br/ZapeatMobile/promocoes";
+		String URL_ZAPEAT = "http://www.saudelivre.com.br/ZapeatMobile/menu.xhtml";
+		String URL_ZAPEAT_PROMOCAO = "http://www.saudelivre.com.br/ZapeatMobile/detalhamento.xhtml";
 		String PARAMETRO_RETORNO = "PARAM_RETORNO";
 		String PARAMETRO_EMAIL = "email";
 		String PARAMETRO_SENHA = "senha";
 		String URL_DOWNLOAD_IMAGE_FORNECEDOR = "http://www.iconlet.com/icons/nuvola/16x16/camera_test.png";
 		// String URL_DOWNLOAD_IMAGE_FORNECEDOR =
-		// "http://192.168.0.17:8080/TestAndroid/imagemFornecedor";
+		// "http://www.saudelivre.com.br/TestAndroid/imagemFornecedor";
 	}
 
 	public interface Storage {
