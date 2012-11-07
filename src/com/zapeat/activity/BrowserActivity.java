@@ -2,6 +2,7 @@ package com.zapeat.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -31,17 +32,14 @@ public class BrowserActivity extends DefaultActivity {
 		ecra.setWebViewClient(new WebViewClient() {
 			
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			
-//				view.loadUrl(url);
-//				
-//				if (url != null && url.endsWith("sair.xhtml")) {
-//					sair();
-//					Intent intentSair = new Intent(BrowserActivity.this, AuthActivity.class);
-//					startActivity(intentSair);
-//					finish();
-//				}
+			    if( url.startsWith("http:") || url.startsWith("https:") ) {
+			        return false;
+			    }
 
-				return false;
+			    // Otherwise allow the OS to handle it
+			    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			    startActivity( intent ); 
+			    return true;
 			}
 			
 		});
