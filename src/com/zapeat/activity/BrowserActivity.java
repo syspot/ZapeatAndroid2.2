@@ -5,9 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.Window;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
@@ -20,7 +17,7 @@ public class BrowserActivity extends DefaultActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 
 		getWindow().requestFeature(Window.FEATURE_PROGRESS);
@@ -28,20 +25,34 @@ public class BrowserActivity extends DefaultActivity {
 		setContentView(R.layout.browser);
 
 		WebView ecra = (WebView) findViewById(R.id.wvBrowser);
-		
-		ecra.setWebViewClient(new WebViewClient() {
-			
-			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			    if( url.startsWith("http:") || url.startsWith("https:") ) {
-			        return false;
-			    }
 
-			    // Otherwise allow the OS to handle it
-			    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-			    startActivity( intent ); 
-			    return true;
+		ecra.setWebViewClient(new WebViewClient() {
+
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+				if (!isOnline()) {
+					view.stopLoading();
+					BrowserActivity.this.startActivity(new Intent(BrowserActivity.this, SemConexaoActivity.class));
+					BrowserActivity.this.finish();
+				}
+
+				if (url.startsWith("http:") || url.startsWith("https:")) {
+					return false;
+				}
+
+				// Otherwise allow the OS to handle it
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				startActivity(intent);
+				return true;
 			}
-			
+
+			@Override
+			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+				view.stopLoading();
+				BrowserActivity.this.startActivity(new Intent(BrowserActivity.this, SemConexaoActivity.class));
+				BrowserActivity.this.finish();
+			}
+
 		});
 
 		String url = Constantes.Http.URL_ZAPEAT;
@@ -73,7 +84,7 @@ public class BrowserActivity extends DefaultActivity {
 		});
 
 	}
-	
+
 	private Long getPromocaoNotificada() {
 
 		SharedPreferences shared = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0);
