@@ -38,7 +38,7 @@ public class PollService extends Service {
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, Constantes.GPS.FREQUENCIA_TEMPO, Constantes.GPS.DISTANCIA, new ZapeatLocationListener());
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0, 0, new ZapeatLocationListener());
 
 		new LocationTask(PollService.this).execute();
 
@@ -174,7 +174,10 @@ public class PollService extends Service {
 
 	private String makePromocaoMessage(Promocao promocao) {
 
-		StringBuilder message = new StringBuilder(promocao.getLocalidade()).append(" - ").append(promocao.getDescricao()).append(" De ").append(promocao.getPrecoOriginal()).append(" por ").append(promocao.getPrecoPromocional());
+		StringBuilder message = new StringBuilder(promocao.getLocalidade()).append(" - ").append(promocao.getDescricao());
+		if(promocao.getPrecoOriginal()!=null) {
+			message.append(" De ").append(promocao.getPrecoOriginal()).append(" por ").append(promocao.getPrecoPromocional());
+		}
 
 		return message.toString();
 
@@ -182,7 +185,7 @@ public class PollService extends Service {
 
 	private String makePromocaoMessage(List<Promocao> promocoes) {
 
-		StringBuilder message = new StringBuilder("Existem ").append(promocoes.size()).append(" promoções próximas a você!");
+		StringBuilder message = new StringBuilder("Existem ").append(promocoes.size()).append(" zapeats para você!");
 
 		return message.toString();
 

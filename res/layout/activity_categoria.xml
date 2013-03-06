@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f4c700" >
+
+    <ImageView
+        android:id="@+categorias/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:src="@drawable/marca" />
+
+    <ListView
+        android:id="@+categorias/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+categorias/btCategorias"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp" >
+
+        <requestFocus />
+    </ListView>
+
+    <Button
+        android:id="@+categorias/btCategorias"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+categorias/listView"
+        android:layout_alignRight="@+categorias/listView"
+        android:layout_below="@+categorias/logo"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/shapebutton"
+        android:clickable="false"
+        android:text="Categorias"
+        android:visibility="gone" />
+
+</RelativeLayout>

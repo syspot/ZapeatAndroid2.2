@@ -1,13 +1,18 @@
 package com.zapeat.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.RenderPriority;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -40,7 +45,6 @@ public class BrowserActivity extends DefaultActivity {
 					return false;
 				}
 
-				// Otherwise allow the OS to handle it
 				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 				startActivity(intent);
 				return true;
@@ -57,21 +61,28 @@ public class BrowserActivity extends DefaultActivity {
 
 		String url = Constantes.Http.URL_ZAPEAT;
 
-		Long promocao = this.getPromocaoNotificada();
+		Location location = ((LocationManager) getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-		if (promocao != null && Long.valueOf(0).compareTo(promocao) != 0) {
+		if (location == null) {
 
-			url = Constantes.Http.URL_ZAPEAT_PROMOCAO + "?promocaoId=" + promocao;
+			location = ((LocationManager) getSystemService(Context.LOCATION_SERVICE)).getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
+		}
+
+		if (location != null) {
+
+			Double latitude = location.getLatitude();
+			Double longitude = location.getLongitude();
+
+			url = url + "?location=(" + latitude + ", " + longitude + ")";
 		}
 
 		ecra.loadUrl(url);
 
 		ecra.getSettings().setJavaScriptEnabled(true);
 		ecra.getSettings().setGeolocationEnabled(true);
-		ecra.getSettings().setAppCacheEnabled(true);
-		ecra.getSettings().setDatabaseEnabled(true);
-		ecra.getSettings().setDomStorageEnabled(true);
+		ecra.getSettings().setRenderPriority(RenderPriority.HIGH);
+		ecra.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
 
 		ecra.setWebChromeClient(new WebChromeClient() {
 			public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
@@ -114,7 +125,7 @@ public class BrowserActivity extends DefaultActivity {
 				if (ecra.canGoBack() == true) {
 					ecra.goBack();
 				} else {
-					finish();
+					startActivity(new Intent(this, CategoriaActivity.class));
 				}
 				return true;
 			}

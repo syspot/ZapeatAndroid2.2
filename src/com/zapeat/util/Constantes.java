@@ -25,9 +25,9 @@ public class Constantes {
 	}
 
 	public interface GPS {
-		int DISTANCIA = 1000; // 1 km
+		int DISTANCIA = 100; // 100m
 		int FREQUENCIA_TEMPO = 3 * 60 * 1000;// 3 min
-		float DISTANCIA_ALERT_PROMOCAO = 2000;
+		float DISTANCIA_ALERT_PROMOCAO = 100;
 	}
 
 	public interface Services {
@@ -62,7 +62,9 @@ public class Constantes {
 
 		String URL_AUTH = "http://www.zapeat.com/ZapeatMobile/autenticar";
 		String URL_PROMOCOES = "http://www.zapeat.com/ZapeatMobile/promocoes";
+		String URL_CATEGORIAS = "http://www.zapeat.com/ZapeatMobile/categorias";
 		String URL_ZAPEAT = "http://www.zapeat.com/ZapeatMobile/menu.xhtml";
+		String URL_LISTAGEM = "http://www.zapeat.com/ZapeatMobile/listagem.xhtml";
 		String URL_ZAPEAT_PROMOCAO = "http://www.zapeat.com/ZapeatMobile/detalhamento.xhtml";
 		String PARAMETRO_RETORNO = "PARAM_RETORNO";
 		String PARAMETRO_EMAIL = "email";

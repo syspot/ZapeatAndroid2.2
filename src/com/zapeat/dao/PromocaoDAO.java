@@ -22,33 +22,44 @@ public class PromocaoDAO {
 		List<Promocao> promocoes = new ArrayList<Promocao>();
 
 		DBUtil conexao = DBUtil.getInstance(context);
-		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-		qb.setTables(DBUtil.Tabelas.PROMOCOES);
+		try {
 
-		qb.appendWhere("DATA_ANUNCIO IS NULL");
+			SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-		Cursor cursor = qb.query(conexao.getReadableDatabase(), colunas, null, null, null, null, "DATA_ANUNCIO DESC");
+			qb.setTables(DBUtil.Tabelas.PROMOCOES);
 
-		cursor.moveToFirst();
+			qb.appendWhere("DATA_ANUNCIO IS NULL");
 
-		Promocao promocao = null;
-		while (!cursor.isAfterLast()) {
+			Cursor cursor = qb.query(conexao.getReadableDatabase(), colunas, null, null, null, null, "DATA_ANUNCIO DESC");
 
-			promocao = this.createPromocao(cursor);
+			cursor.moveToFirst();
 
-			if (promocao != null && Utilitario.isBeforeToday(promocao.getDataInicial()) && Utilitario.isAfterToday(promocao.getDataFinal())) {
-				try {
-					promocao.setDataFinal(Utilitario.formatBrasil(promocao.getDataFinal()));
-				} catch (Exception ex) {
+			Promocao promocao = null;
+			while (!cursor.isAfterLast()) {
+
+				promocao = this.createPromocao(cursor);
+
+				if (promocao != null && Utilitario.isBeforeToday(promocao.getDataInicial()) && Utilitario.isAfterToday(promocao.getDataFinal())) {
+					try {
+						promocao.setDataFinal(Utilitario.formatBrasil(promocao.getDataFinal()));
+					} catch (Exception ex) {
+					}
+					promocoes.add(promocao);
 				}
-				promocoes.add(promocao);
+
+				cursor.moveToNext();
 			}
 
-			cursor.moveToNext();
-		}
+		} catch (Exception ex) {
+			
+			ex.printStackTrace();
 
-		DBUtil.close(conexao, cursor);
+		} finally {
+
+			DBUtil.close(conexao, null);
+
+		}
 
 		return promocoes;
 
@@ -58,31 +69,41 @@ public class PromocaoDAO {
 
 		List<Promocao> promocoes = new ArrayList<Promocao>();
 		DBUtil conexao = DBUtil.getInstance(context);
-		SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-		qb.setTables(DBUtil.Tabelas.PROMOCOES);
 
-		Cursor cursor = qb.query(conexao.getReadableDatabase(), colunas, null, null, null, null, "DATA_ANUNCIO DESC");
+		try {
+			SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+			qb.setTables(DBUtil.Tabelas.PROMOCOES);
 
-		cursor.moveToFirst();
-		Promocao promocao = null;
-		while (!cursor.isAfterLast()) {
+			Cursor cursor = qb.query(conexao.getReadableDatabase(), colunas, null, null, null, null, "DATA_ANUNCIO DESC");
 
-			promocao = this.createPromocao(cursor);
+			cursor.moveToFirst();
 
-			if (promocao != null && Utilitario.isAfterToday(promocao.getDataFinal())) {
+			Promocao promocao = null;
 
-				try {
-					promocao.setDataFinal(Utilitario.formatBrasil(promocao.getDataFinal()));
-				} catch (Exception ex) {
+			while (!cursor.isAfterLast()) {
+
+				promocao = this.createPromocao(cursor);
+
+				if (promocao != null && Utilitario.isAfterToday(promocao.getDataFinal())) {
+
+					try {
+						promocao.setDataFinal(Utilitario.formatBrasil(promocao.getDataFinal()));
+					} catch (Exception ex) {
+					}
+
+					promocoes.add(promocao);
 				}
 
-				promocoes.add(promocao);
+				cursor.moveToNext();
 			}
 
-			cursor.moveToNext();
-		}
+		} catch (Exception ex) {
 
-		DBUtil.close(conexao, cursor);
+		} finally {
+
+			DBUtil.close(conexao, null);
+
+		}
 
 		return promocoes;
 
@@ -101,7 +122,9 @@ public class PromocaoDAO {
 			qb.appendWhere("upper(localidade) like % " + fornecedor.toUpperCase() + "%");
 
 		cursor.moveToFirst();
+
 		Promocao promocao = null;
+
 		while (!cursor.isAfterLast()) {
 
 			promocao = this.createPromocao(cursor);
@@ -109,8 +132,11 @@ public class PromocaoDAO {
 			if (promocao != null && Utilitario.isAfterToday(promocao.getDataFinal())) {
 
 				try {
+
 					promocao.setDataFinal(Utilitario.formatBrasil(promocao.getDataFinal()));
+
 				} catch (Exception ex) {
+
 				}
 
 				promocoes.add(promocao);

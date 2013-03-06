@@ -22,5 +22,6 @@
     <string name="promocoes">Promoções do dia</string>
     <string name="title_activity_map_view">Zapeat - Mapa</string>
     <string name="mapa">Ir para o mapa</string>
+    <string name="title_activity_categoria">Zapeat</string>
 
 </resources>

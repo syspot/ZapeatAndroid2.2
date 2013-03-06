@@ -1,26 +1,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zapeat.activity"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:installLocation="preferExternal"
+    android:versionCode="5"
+    android:versionName="1.4" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="8" />
+        android:targetSdkVersion="16" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-	
+
     <application
+        android:name="com.zapeat.activity.ZapeatApp"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
@@ -39,9 +41,9 @@
             android:label="@string/title_activity_browser"
             android:screenOrientation="portrait" >
         </activity>
-         <activity
+        <activity
             android:name=".SemConexaoActivity"
-            android:label="@string/title_activity_browser">
+            android:label="@string/title_activity_browser" >
         </activity>
 
         <service
@@ -49,6 +51,7 @@
             android:exported="false" >
             <intent-filter>
                 <action android:name="MONITORING" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
@@ -61,10 +64,14 @@
                 <category android:name="android.intent.category.HOME" >
                 </category>
             </intent-filter>
-
         </receiver>
 
         <uses-library android:name="com.google.android.maps" />
+
+        <activity
+            android:name=".CategoriaActivity"
+            android:label="@string/title_activity_categoria" >
+        </activity>
     </application>
 
 </manifest> <!-- 0FaYmGMb5hDFqrIZLxfYTkFr3EBdfu8moHIZOMg KEY GOOGLE -->

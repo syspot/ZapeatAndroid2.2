@@ -28,6 +28,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.zapeat.exception.ApplicationException;
+import com.zapeat.model.Categoria;
 import com.zapeat.model.Promocao;
 import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
@@ -245,6 +246,89 @@ public class HttpUtil {
 		}
 
 		return promocoes;
+
+	}
+
+	public static List<Categoria> pesquisarCategorias(Double latitude,Double longitude) throws ApplicationException {
+
+		try {
+
+			HttpParams httpParameters = new BasicHttpParams();
+
+			int timeoutConnection = 2000;
+			HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+
+			HttpClient httpclient = new DefaultHttpClient(httpParameters);
+
+			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+			
+			String url = Constantes.Http.URL_CATEGORIAS;
+			
+			if(latitude!=null) {
+				
+				url = url + "?latitude="+latitude+"&longitude="+longitude;
+				
+			}
+
+			HttpPost httppost = new HttpPost(url);
+
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			HttpResponse response = httpclient.execute(httppost);
+
+			return readCategorias(response);
+
+		} catch (Exception ex) {
+			throw new ApplicationException(ex);
+		}
+
+	}
+
+	private static List<Categoria> readCategorias(HttpResponse response) throws JSONException, IOException {
+
+		StringBuilder builder = new StringBuilder();
+		HttpEntity entity = response.getEntity();
+		InputStream content = entity.getContent();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+		String line;
+
+		while ((line = reader.readLine()) != null) {
+			builder.append(line);
+		}
+
+		JSONObject jsonObject = new JSONObject(builder.toString());
+
+		return readJsonCategoria(jsonObject);
+
+	}
+
+	private static List<Categoria> readJsonCategoria(JSONObject object) throws JSONException {
+
+		List<Categoria> categorias = new ArrayList<Categoria>();
+
+		JSONArray array = object.getJSONArray("categorias");
+
+		JSONObject json = null;
+
+		Categoria cat = null;
+
+		for (int i = 0; i < array.length(); i++) {
+
+			json = array.getJSONObject(i);
+
+			cat = new Categoria();
+
+			cat.setId(json.getLong(Constantes.JsonProperties.ID));
+
+			cat.setDescricao(json.getString(Constantes.JsonProperties.DESCRICAO));
+			
+			cat.setQuantidade(json.getInt("quantidade"));
+
+			categorias.add(cat);
+
+		}
+
+		return categorias;
 
 	}
 

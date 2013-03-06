@@ -29,7 +29,7 @@ public class SemConexaoActivity extends DefaultActivity {
 
 	private void tentarNovamente() {
 		if (isOnline()) {
-			this.startActivity(new Intent(this, BrowserActivity.class));
+			this.startActivity(new Intent(this, CategoriaActivity.class));
 			this.finish();
 		}
 	}
