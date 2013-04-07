@@ -11,10 +11,13 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
@@ -29,6 +32,7 @@ import android.graphics.BitmapFactory;
 
 import com.zapeat.exception.ApplicationException;
 import com.zapeat.model.Categoria;
+import com.zapeat.model.FornecedorCheckInModel;
 import com.zapeat.model.Promocao;
 import com.zapeat.model.Usuario;
 import com.zapeat.util.Constantes;
@@ -249,7 +253,7 @@ public class HttpUtil {
 
 	}
 
-	public static List<Categoria> pesquisarCategorias(Double latitude,Double longitude) throws ApplicationException {
+	public static List<Categoria> pesquisarCategorias(Double latitude, Double longitude) throws ApplicationException {
 
 		try {
 
@@ -261,13 +265,13 @@ public class HttpUtil {
 			HttpClient httpclient = new DefaultHttpClient(httpParameters);
 
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-			
+
 			String url = Constantes.Http.URL_CATEGORIAS;
-			
-			if(latitude!=null) {
-				
-				url = url + "?latitude="+latitude+"&longitude="+longitude;
-				
+
+			if (latitude != null) {
+
+				url = url + "?latitude=" + latitude + "&longitude=" + longitude;
+
 			}
 
 			HttpPost httppost = new HttpPost(url);
@@ -321,7 +325,7 @@ public class HttpUtil {
 			cat.setId(json.getLong(Constantes.JsonProperties.ID));
 
 			cat.setDescricao(json.getString(Constantes.JsonProperties.DESCRICAO));
-			
+
 			cat.setQuantidade(json.getInt("quantidade"));
 
 			categorias.add(cat);
@@ -329,6 +333,50 @@ public class HttpUtil {
 		}
 
 		return categorias;
+
+	}
+
+	public static void comentar(FornecedorCheckInModel fornecedorCheckInModel) {
+
+		HttpParams httpParameters = new BasicHttpParams();
+
+		int timeoutConnection = 5000;
+
+		HttpConnectionParams.setConnectionTimeout(httpParameters, timeoutConnection);
+
+		HttpClient httpclient = new DefaultHttpClient(httpParameters);
+
+		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+
+		String url = Constantes.Http.URL_CHECKIN 
+					+ "?fornecedor_id=" + fornecedorCheckInModel.getFornecedor() 
+					+ "&usuario=" + fornecedorCheckInModel.getTokenUsuario() 
+					+ "&texto=" + fornecedorCheckInModel.getTexto().replaceAll(" ", "%20");
+
+		if (fornecedorCheckInModel.getImage() != null) {
+
+			entity.addPart("file", fornecedorCheckInModel.getImage());
+			
+			url = url + "&tem_imagem=1";
+
+		}
+
+		if (fornecedorCheckInModel.getPostarFacebook()) {
+			url = url + "&postar_facebook=1";
+		}
+
+		HttpPost httppost = new HttpPost(url);
+
+		httppost.setEntity(entity);
+		
+		try {
+			httpclient.execute(httppost);
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
 
 	}
 

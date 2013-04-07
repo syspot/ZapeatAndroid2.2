@@ -3,33 +3,13 @@ package com.zapeat.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.OverlayItem;
-
-public class Promocao extends OverlayItem implements Serializable {
+public class Promocao implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	public Promocao() {
-		super(null, null, null);
-	}
-
-	public Promocao(GeoPoint point, Promocao promocao) {
-		super(point, promocao.getLocalidade(), promocao.getDescricao());
-		this.id = promocao.getId();
-		this.localidade = promocao.getLocalidade();
-		this.latitude = promocao.getLatitude();
-		this.longitude = promocao.getLongitude();
-		this.descricao = promocao.getDescricao();
-		this.dataAnuncio = promocao.getDataAnuncio();
-		this.dataFinal = promocao.getDataFinal();
-		this.precoOriginal = promocao.getPrecoOriginal();
-		this.precoPromocional = promocao.getPrecoPromocional();
-		this.idFornecedor = promocao.getIdFornecedor();
-	}
+	
 
 	private Long id;
 	private String localidade;

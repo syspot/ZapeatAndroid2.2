@@ -1,6 +1,7 @@
 package com.zapeat.activity;
 
 import java.lang.reflect.Method;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +21,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.text.TextUtils;
 
 import com.zapeat.dao.PromocaoDAO;
 import com.zapeat.exception.ApplicationException;
@@ -38,9 +40,7 @@ public class PollService extends Service {
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,0, 0, new ZapeatLocationListener());
-
-		new LocationTask(PollService.this).execute();
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new ZapeatLocationListener());
 
 	}
 
@@ -49,65 +49,53 @@ public class PollService extends Service {
 		return null;
 	}
 
-	private class LocationTask extends AsyncTask<String, Void, Boolean> {
-
-		@SuppressWarnings("unused")
-		private Service service;
-
-		public LocationTask(Service service) {
-			this.service = service;
-		}
+	public class BuscarPromocoes extends AsyncTask<Void, Void, Void> {
 
 		@Override
-		protected Boolean doInBackground(final String... args) {
-			initStrictMode();
+		protected Void doInBackground(Void... params) {
+
 			List<Promocao> promocoesNovas = null;
+
 			List<Promocao> promocoesAtuais = null;
+
 			Promocao nova = null;
+
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
-			while (true) {
+			try {
 
-				try {
+				promocoesNovas = HttpUtil.pesquisarPromocoes();
 
-					promocoesNovas = HttpUtil.pesquisarPromocoes();
-					
-					promocoesAtuais = promocaoDAO.pesquisarTodas(getApplicationContext());
+				promocoesAtuais = promocaoDAO.pesquisarTodas(getApplicationContext());
 
-					Iterator<Promocao> iterador = promocoesNovas.iterator();
+				Iterator<Promocao> iterador = promocoesNovas.iterator();
 
-					while (iterador.hasNext()) {
+				while (iterador.hasNext()) {
 
-						nova = iterador.next();
+					nova = iterador.next();
 
-						if (promocoesAtuais.contains(nova)) {
-							iterador.remove();
-						}
+					if (promocoesAtuais.contains(nova)) {
+						iterador.remove();
 					}
-
-					promocaoDAO.inserir(promocoesNovas, getApplicationContext());
-
-					SharedPreferences.Editor editor = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).edit();
-
-					editor.remove(Constantes.Preferencias.ULTIMA_ATUALIZACAO);
-
-					editor.putString(Constantes.Preferencias.ULTIMA_ATUALIZACAO, dateFormat.format(new Date()));
-
-					editor.commit();
-
-				} catch (ApplicationException ex) {
-					ex.printStackTrace();
-				} finally {
-
-					try {
-						Thread.sleep(Constantes.Services.PERIODICIDADE);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-
 				}
+
+				promocaoDAO.inserir(promocoesNovas, getApplicationContext());
+
+				SharedPreferences.Editor editor = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0).edit();
+
+				editor.remove(Constantes.Preferencias.ULTIMA_ATUALIZACAO);
+
+				editor.putString(Constantes.Preferencias.ULTIMA_ATUALIZACAO, dateFormat.format(new Date()));
+
+				editor.commit();
+
+			} catch (ApplicationException ex) {
+				ex.printStackTrace();
 			}
+
+			return null;
 		}
+
 	}
 
 	private class ZapeatLocationListener implements LocationListener {
@@ -130,7 +118,7 @@ public class PollService extends Service {
 					if (result.length >= 0 && result[0] <= Constantes.GPS.DISTANCIA_ALERT_PROMOCAO) {
 
 						promocaoDAO.marcarEnviada(promocao, getApplicationContext());
-						
+
 						notificaveis.add(promocao);
 
 					}
@@ -144,17 +132,50 @@ public class PollService extends Service {
 			if (!notificaveis.isEmpty()) {
 
 				if (notificaveis.size() <= 3) {
-					
+
 					notificate(notificaveis.get(0));
-					
+
 					notificate(notificaveis.get(1));
-					
+
 					notificate(notificaveis.get(2));
 
 				} else {
 
 					notificate(notificaveis);
 
+				}
+
+			}
+
+			SharedPreferences preferences = getSharedPreferences(Constantes.Preferencias.PREFERENCE_DEFAULT, 0);
+
+			String ultima = preferences.getString(Constantes.Preferencias.ULTIMA_ATUALIZACAO, "");
+
+			if (TextUtils.isEmpty(ultima)) {
+
+				new BuscarPromocoes().execute();
+
+			} else {
+
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+
+				try {
+
+					Date data = dateFormat.parse(ultima);
+
+					long milis = new Date().getTime() - data.getTime();
+
+					milis = milis / 1000 / 60 / 60;
+
+					if (milis >= 3) {
+
+						new BuscarPromocoes().execute();
+
+					}
+
+				} catch (ParseException e) {
+
+					e.printStackTrace();
 				}
 
 			}
@@ -175,7 +196,7 @@ public class PollService extends Service {
 	private String makePromocaoMessage(Promocao promocao) {
 
 		StringBuilder message = new StringBuilder(promocao.getLocalidade()).append(" - ").append(promocao.getDescricao());
-		if(promocao.getPrecoOriginal()!=null) {
+		if (promocao.getPrecoOriginal() != null && ! "".equals(promocao.getPrecoOriginal().trim())) {
 			message.append(" De ").append(promocao.getPrecoOriginal()).append(" por ").append(promocao.getPrecoPromocional());
 		}
 

@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"  
+    android:background="#f4c700" >
+    
+        <ImageView
+        android:id="@+checkin/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/marca" />
+
+    <TextView
+        android:id="@+checkin/titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+checkin/logo"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="Check-In Oba-Oba"
+        android:textSize="20dip"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+checkin/texto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+checkin/titulo"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:inputType="textMultiLine"
+        android:lines="3" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+checkin/foto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+checkin/teto"
+        android:layout_below="@+checkin/checkBox"
+        android:text="Capturar Foto"
+        android:onClick="takePhoto" />
+
+    <Button
+        android:id="@+checkin/bt_checkin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+checkin/texto"
+        android:layout_below="@+checkin/checkBox"
+        android:text="Fazer Check-In"
+        android:onClick="checkin" />
+
+    <CheckBox
+        android:id="@+checkin/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+checkin/texto"
+        android:layout_alignLeft="@+checkin/texto"
+        android:text="Postar no Facebook" />
+
+</RelativeLayout>

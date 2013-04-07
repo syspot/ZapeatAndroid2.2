@@ -60,18 +60,20 @@ public class Constantes {
 			String FALHA_AUTENTICACAO = "A autenticação falhou por motivos técnicos. Tente novamente mais tarde";
 		}
 
-		String URL_AUTH = "http://www.zapeat.com/ZapeatMobile/autenticar";
-		String URL_PROMOCOES = "http://www.zapeat.com/ZapeatMobile/promocoes";
-		String URL_CATEGORIAS = "http://www.zapeat.com/ZapeatMobile/categorias";
-		String URL_ZAPEAT = "http://www.zapeat.com/ZapeatMobile/menu.xhtml";
-		String URL_LISTAGEM = "http://www.zapeat.com/ZapeatMobile/listagem.xhtml";
-		String URL_ZAPEAT_PROMOCAO = "http://www.zapeat.com/ZapeatMobile/detalhamento.xhtml";
+		String URL_CHECKIN = "http://www.zapeat.com/ZapeatMobileDev/checkin";
+		String URL_AUTH = "http://www.zapeat.com/ZapeatMobileDev/autenticar";
+		String URL_PROMOCOES = "http://www.zapeat.com/ZapeatMobileDev/promocoes";
+		String URL_CATEGORIAS = "http://www.zapeat.com/ZapeatMobileDev/categorias";
+		String URL_ZAPEAT = "http://www.zapeat.com/ZapeatMobileDev/menu.xhtml";
+		String URL_ZAPEAT_IMAGEM = "http://www.zapeat.com/img_zapeat/";
+		String URL_LISTAGEM = "http://www.zapeat.com/ZapeatMobileDev/listagem.xhtml";
+		String URL_ZAPEAT_PROMOCAO = "http://www.zapeat.com/ZapeatMobileDev/detalhamento.xhtml";
 		String PARAMETRO_RETORNO = "PARAM_RETORNO";
 		String PARAMETRO_EMAIL = "email";
 		String PARAMETRO_SENHA = "senha";
 		String URL_DOWNLOAD_IMAGE_FORNECEDOR = "http://www.iconlet.com/icons/nuvola/16x16/camera_test.png";
 		// String URL_DOWNLOAD_IMAGE_FORNECEDOR =
-		// "http://www.zapeat.com/TestAndroid/imagemFornecedor";
+		// "http://www.zapeat.com/ZapeatMobileDev/TestAndroid/imagemFornecedor";
 	}
 
 	public interface Storage {

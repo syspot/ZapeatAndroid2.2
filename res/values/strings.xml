@@ -23,5 +23,7 @@
     <string name="title_activity_map_view">Zapeat - Mapa</string>
     <string name="mapa">Ir para o mapa</string>
     <string name="title_activity_categoria">Zapeat</string>
-
+    <string name="title_activity_check_in">Check-In</string>
+    <string name="app_id">288597137908601</string>
+    
 </resources>
